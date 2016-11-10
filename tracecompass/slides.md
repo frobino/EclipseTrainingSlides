@@ -196,7 +196,7 @@ subtitle: Custom Text and XML Parsers
 
 ---
 title: Trace Compass Overview
-subtitle: Trace corellation (Experiments)
+subtitle: Trace correlation (Experiments)
 
 - Trace Compass can open **multiple traces** together to view it **as one**
 	- This is called an **Experiment**
@@ -224,7 +224,7 @@ title: Common Trace Format (CTF)
 - A **metadata** file describes the trace structure, event fields, environment, etc.
 	- CTF does not describe that structure, only the language to express it.
 - **Channel** files contain binary data, separate from the **metadata**. There is where the events are stored.
-- **LTTng** is a well known tracer that gernerates CTF traces for **Kernel** and **User Space (UST)** domains.
+- **LTTng** is a well known tracer that generates CTF traces for **Kernel** and **User Space (UST)** domains.
 - Trace Compass **reads** CTF traces directly using a Java-based parser.
 - Trace Compass **does not** produce CTF traces, tracers like LTTng do.
 ---
@@ -256,7 +256,7 @@ subtitle: Core Trace API
 title: Signals
 
 - Classes can register themselves to receive various Trace-related signals
-- Uses Java annotation, `@TmfSignalHandler`, to mark method that recieves the signal
+- Uses Java annotation, `@TmfSignalHandler`, to mark method that receives the signal
 - Some signals: `TmfTraceOpenedSignal`, `TmfTraceClosedSignal`, `TmfTraceRangeUpdatedSignal`
 
 ~~~java
@@ -332,10 +332,10 @@ title: Events
 
 `ITmfEvent`
 
-- Reprensents a single event in the trace
+- Represents a single event in the trace
 - Contains a **name** (event type). Use `getName()` to retrieve it.
 - Contains a **time stamp**. Use `getTimestamp()` to retrieve it.
-- Contains **content** (fields). Use `getContent()` to retrieve it in the form of an `ITmfEventField`. Fields can then be retrived with `getField("myfield")` for example. Fields can also have sub-fields
+- Contains **content** (fields). Use `getContent()` to retrieve it in the form of an `ITmfEventField`. Fields can then be retrieved with `getField("myfield")` for example. Fields can also have sub-fields
 
 ~~~java
 ITmfEventField field = event.getContent().getField("myfield");
@@ -363,7 +363,7 @@ title: Module 2 Review
 - **ITmfTrace** is a central object that validates if files are of this trace type, provides trace attributes, seeks to locations and retrieves events.
 - **Event Requests** are a mean to obtain a series of event asynchronously.
 - **Events** have a name, a time stamp and content (fields). Fields can have sub-fields.
-- In the exercices:
+- In the exercises:
 	- We have used **signals**
 	- We have retrieved **events** using **event requests** sent to the **trace** (`ITmfTrace`)
 
@@ -604,8 +604,8 @@ subtitle:
 - Providing the analysis requirement from the analysis 
 - Exploring the analysis in Project Explorer
 	- Analysis shown if all requirements are fulfilled
-	- Otherwise analysis is striked-through
-- Showing the analysis help  
+	- Otherwise analysis is struck-through
+- Showing the analysis help
 
 ---
 
@@ -1033,7 +1033,7 @@ subtitle:
 	- Implement createStateProvider()
 	- Return an instance of <code>ProcessingTimeStateProvider</code> (class already exists) 
 - Implement <code>ProcessingTimeStateProvider</code>
-	- See next slides for state machine and attribute tree  
+	- See next slides for state machine and attribute tree
 - Run Trace Compass and open trace
 - Open State System Explorer (Window -> Show View -> Tracing -> State System Explorer)
 	- Explore state system org.eclipse.tracecompass.training.example.ht 
@@ -1748,7 +1748,7 @@ title: Module 7 Review
 - **Segments** (`ISegment`) are defined by a start and an end time. They can represent things like execution times, latencies, etc.
 - Multiple segments can represent **latency chain**. For example multiple sub-steps of a process.
 - State systems can help generalize the creation of segments
-- **ISegmentStore** stores segments like a Java Collection but with interection methods
+- **ISegmentStore** stores segments like a Java Collection but with intersection methods
 - **AbstractSegmentStoreAnalysisModule** helps building segments, storing them and providing them to clients (views).
 - In the exercise: We have created a **segment-based analysis module** that creates segments and stores them in a segment store which will be available for our views.
 
@@ -1802,7 +1802,7 @@ subtitle: API
 
 - `AbstractSegmentStoreTableViewer`
 	- An abstract class that helps create a table viewer.
-	- `createProviderColumns`: can be overidden to have greater influence on columns (order, etc).
+	- `createProviderColumns`: can be overridden to have greater influence on columns (order, etc).
 	- `getSegmentStoreProvider`: returns which analysis module will provide the segment store
 ~~~java
 @Override
@@ -1834,7 +1834,7 @@ title: Statistics view
 subtitle: API
 
 - `AbstractSegmentStatisticsAnalysis`
-	- An abstract class that helps create a statistics module resuing an existing segment store provider (i.e. an other module).
+	- An abstract class that helps create a statistics module reusing an existing segment store provider (i.e. an other module).
 	- `getSegmentType`: returns the segment type to compute the statistics for.
 	- `getSegmentProviderAnalysis`: returns an existing segmentstore provider.
 
@@ -1875,7 +1875,7 @@ title: Exercise: Create a Statistics View
 title: Scatter chart
 
 - The Scatther view displays the segment durations over time in a 2D plot chart
-	- Each dot reprensent the time it ended on the X-axis and its duration on the Y-axis
+	- Each dot represent the time it ended on the X-axis and its duration on the Y-axis
 	- Makes it possible to spot **outliners**
 
 <center><img src="images/timingviews_scatter.png"/></center>
@@ -1905,8 +1905,8 @@ title: Exercise: Create a Scatter View
 ---
 title: Density view
 
-- The Density view displays the segment durations on the frenquency domain.
-	- Each bar reprensent the **duration** of the segment on the **X-axis** and the **count** of segments on the **Y-axis**
+- The Density view displays the segment durations on the frequency domain.
+	- Each bar represent the **duration** of the segment on the **X-axis** and the **count** of segments on the **Y-axis**
 <center><img src="images/timingviews_density.png" style="width:600px"/></center>
 <br/>
 - In other words, fast system calls are on the left and slow system calls are on the right
@@ -1966,7 +1966,7 @@ content_class: smaller
     <br><br>
     - Share analysis and views
     <br><br>
-    - Find an execution flow within the trace    
+    - Find an execution flow within the trace
 
 ---
 title: XML analysis basic
@@ -2075,7 +2075,7 @@ subtitle: Execute the analysis
 content_class: smaller
 
 - Open the trace.
-    The 'Xml kernel State System' analysis should be now expandable.
+    The 'XML kernel State System' analysis should be now expandable.
 
 <div style="float:right;"><img src="images/xml/analysis_and_view_under_trace.png" style="width:250px;"/></div>
 
@@ -2211,7 +2211,7 @@ content_class: smaller
 <br/>
 
 - Open the latency views:
-    - Latency Statistcis view
+    - Latency Statistics view
     - Latency Table view
     - Latency vs Count
     - Latency vs Time
@@ -2261,7 +2261,7 @@ title: Example 2
 subtitle: Edit the analysis
 content_class: smaller
 
-- We need to call the action when the processing endeded (when we receive the `ust_master:PROCESS_END`event).
+- We need to call the action when the processing ended (when we receive the `ust_master:PROCESS_END`event).
 <br><br>
 - Let's add an action to the `ust_master:PROCESS_END` event transition.
 <br>
