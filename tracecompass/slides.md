@@ -316,8 +316,8 @@ title: Event Requests
 - **Asynchronous**: Send the request and receive events one by one when they are done being parsed
 
 ~~~java
-eventProvider.sendRequest(new TmfEventRequest(TmfEvent.class,
-        0, ITmfEventRequest.ALL_DATA,
+eventProvider.sendRequest(new TmfEventRequest(
+        TmfEvent.class, 0, ITmfEventRequest.ALL_DATA,
         ITmfEventRequest.ExecutionType.BACKGROUND) {
 
     @Override
@@ -338,6 +338,7 @@ title: Events
 - Contains **content** (fields). Use `getContent()` to retrieve it in the form of an `ITmfEventField`. Fields can then be retrieved with `getField("myfield")` for example. Fields can also have sub-fields
 
 ~~~java
+
 ITmfEventField field = event.getContent().getField("myfield");
 if (field != null) {
     System.out.println(field.getFormattedValue());
@@ -399,46 +400,50 @@ subtitle:
 
 - API for data collection
 - Can have dependent analysis and requirements on trace content
-- All analyses implement <code>ITmfAnalysisModule</code>
-- Abstract implementation <code>TmfAbstractAnalysisModule</code>
+- All analyses implement `ITmfAnalysisModule`
+- Abstract implementation `TmfAbstractAnalysisModule`
 - 0..N analyses per trace or experiment
-
-<pre class="prettyprint" data-lang="java">
-	public class ProcessingTimeAnalysis extends TmfAbstractAnalysisModule {
-		public ProcessingTimeAnalysis() {}
-		@Override
-		protected boolean executeAnalysis(IProgressMonitor monitor) throws TmfAnalysisException {
-			return true;
-		}
-		@Override
-		protected void canceling() {
-		}
-	}
-</pre>
 
 ---
 title: Analysis Module (2)
+subtitle:
+content_class: smaller
+
+~~~java
+
+public class ProcessingTimeAnalysis extends TmfAbstractAnalysisModule {
+	public ProcessingTimeAnalysis() {}
+	@Override
+	protected boolean executeAnalysis(IProgressMonitor monitor) 
+		throws TmfAnalysisException {
+		return true;
+	}
+	@Override
+	protected void canceling() {
+	}
+}
+~~~
+
+---
+title: Analysis Module (3)
 subtitle: 
 
-- Analysis is scheduled <code>IAnalysisModule#schedule()</code>
-- <code>IAnalysisModule#waitForCompletion()</code> will block thread until completion
-- Use Progress monitor in <code>executeAnalysis()</code> 
+- Analysis is scheduled `IAnalysisModule#schedule()`
+- `IAnalysisModule#waitForCompletion()` will block thread until completion
+- Use Progress monitor in `executeAnalysis()` 
 	- to monitor progress
 	- handle user cancellation (important!)
-- An analysis can be cancelled using <code>IAnalysisModule#cancel()</code>
-- Provide help for user using <code>IAnalysisModule#getHelpText()</code>
-- <code>TmfAnalysisManager</code> keeps track on available analysis per trace type
-	- Can be queried to find specific analyses
-	- Uses <code>IAnalysisModuleHelper</code> which is created per analysis module
+- An analysis can be cancelled using `IAnalysisModule#cancel()`
+- Provide help for user using `IAnalysisModule#getHelpText()`
+- `TmfAnalysisManager` keeps track on available analysis per trace type
 
 ---
 title: Plug-in Extension Point
 subtitle: Analysis Module
 content_class: smaller
 
-- Identifier: org.eclipse.linuxtools.tmf.core.analysis
-
-	<pre class="prettyprint" data-lang="DTD">
+- **Identifier**: org.eclipse.linuxtools.tmf.core.analysis
+~~~dtd
 		<!ELEMENT module (parameter , tracetype)*>
 		<!ATTLIST module
 		id                 CDATA #REQUIRED
@@ -447,14 +452,13 @@ content_class: smaller
 		icon               CDATA #IMPLIED
 		automatic          (true | false)
 		applies_experiment (true | false) >
-		</pre>
-
-- _id_: The unique ID that identifies this analysis module.
-- _name_: The trace analysis module's name as it is displayed to the end user
-- _analysis_module_: The fully qualified name of a class that implements the IAnalysisModule interface.
-- _icon_: The icon associated to this analysis module.
-- _automatic_: Whether to execute this analysis automatically when trace is opened, or wait for the user to ask for it
-- _applies_experiment_: If it applies to traces or experiments.
+~~~
+- **id**: The unique ID that identifies this analysis module.
+- **name**: The trace analysis module's name as it is displayed to the end user
+- **analysis_module**: Class that implements the `IAnalysisModule` interface.
+- **icon**: The icon associated to this analysis module.
+- **automatic**: Execute automatically when trace is opened, or on request by user
+- **applies_experiment**: If it applies to traces or experiments.
 
 ---
 title: Plug-in Manifest Editor
@@ -476,22 +480,23 @@ subtitle:
 
 <center><img src="images/ProjectExplorerWithAnalysis.png" width="40%" height="40%"/></center>
 
+---
 title: Apply to Trace Type
 subtitle: 
 
 - Define the trace type the analysis applies (or not)
 
-	<pre class="prettyprint" data-lang="DTD">
+~~~dtd
 		<!ELEMENT tracetype EMPTY&>
 		<!ATTLIST tracetype
 		class   CDATA #REQUIRED
 		applies (true | false) >
-	</pre>
+~~~
 
 - 
-- _class_: base trace class this analysis applies to or not 
+- **class**: base trace class this analysis applies to or not 
 	- Note: it also applies to traces extending this class
-- _applies_: Does this tracetype element mean the class applies or not (default true)
+- **applies**: Does this tracetype element mean the class applies or not (default true)
 
 ---
 
@@ -510,19 +515,25 @@ content_class: smaller
 
 - Reset to **TRACECOMPASS3.1_START**
 - Add a new analysis module by adding an extension (plugin.xml)
-	- extension point: <code>org.eclipse.linuxtools.tmf.core.analysis</code>
+	- extension point: `org.eclipse.linuxtools.tmf.core.analysis`
 - New module (hint: right-mouse click on added extension)
-	- _id_: <code>org.eclipse.tracecompass.training.example.processing.module</code>
-	- _name_: <code>Processing Analysis</code>
+	- _id_: `org.eclipse.tracecompass.training.example.processing.module`
+	- _name_: `Processing Analysis`
 	- click on hyperlink **analysis_module** 
-		- Class name: <code>ProcessingTimeModule</code>
-		- Select **Browse...** button and find superclass <code>TmfAbstractAnalysisModule</code>
-		- Remove <code>IAnalysisModule</code> interface from Interfaces list
-- Right-click on Processing Analysis -> New -> tracetype
-- Click on **Browse...** and find class <code>LttngUstTrace</code>
-- Output something on console (in <code>executeAnalysis()</code>)
-- Run Trace Compass and Open trace training_ust_001
+		- Class name: `ProcessingTimeModule`
+		- Select **Browse...** button and find superclass `TmfAbstractAnalysisModule`
+		- Remove `IAnalysisModule` interface from Interfaces list
+- Output something on console (in method`executeAnalysis()`)
+- continue on next slide
 
+---
+title: Exercise: Create an analysis module
+subtitle: 
+content_class: smaller
+
+- Right-click on Processing Analysis -> New -> tracetype
+- Click on **Browse...** and find class `LttngUstTrace`
+- Run Trace Compass and Open trace training_ust_001
 - **Go!**	
 
 ---
@@ -543,56 +554,65 @@ subtitle:
 - 
 - Provide information to user if analysis can't run
 - Requirements on event types or specific event field
-- Implement interface <code>IAnalysisRequirementProvider</code>
+- Implement interface `IAnalysisRequirementProvider`
 
-	<pre class="prettyprint" data-lang="java">
-	public interface IAnalysisRequirementProvider {
-		Iterable&lt;TmfAbstractAnalysisRequirement&gt; getAnalysisRequirements();
-	</pre>
+~~~java
+public interface IAnalysisRequirementProvider {
+	Iterable<TmfAbstractAnalysisRequirement> 
+		getAnalysisRequirements();
+}
+~~~
 
-- Extend <code>TmfAbstractAnalysisRequirement</code> or
+---
+
+title: Analysis Requirements (2)
+subtitle: 
+
+- Extend `TmfAbstractAnalysisRequirement` or
 - Use existing classes 
-	- <code>TmfAnalysisEventRequirement</code>: events by name
-	- <code>TmfAnalysisEventFieldRequirement</code>: event fields for some or all events
-	- <code>TmfCompositeAnalysisRequirement</code>: combine multiple ones
-- Have a priority e.g. <code>PriorityLevel#MANDATORY</code>, <code>PriorityLevel#OPTIONAL</code>
+	- `TmfAnalysisEventRequirement`: events by name
+	- `TmfAnalysisEventFieldRequirement`: event fields for some or all events
+	- `TmfCompositeAnalysisRequirement`: combine multiple ones
+- Requirements have a priority 
+	- e.g. `PriorityLevel#MANDATORY`, `PriorityLevel#OPTIONAL`
 
 ---
 title: Analysis Requirements Example
 subtitle: 
+content_class: smaller
 
-- 
-
-	<pre class="prettyprint" data-lang="java">
-	@Override
-	public Iterable&lt;TmfAbstractAnalysisRequirement&gt; getAnalysisRequirements() {
-		Set<TmfAbstractAnalysisRequirement> requirements = fAnalysisRequirements;
-		if (requirements == null) {
-		Set<String> requiredEvents = ImmutableSet.of(
-			"ust_master:CREATE",
-			"ust_master:START",
-		);
-		// Initialize the requirements for the analysis: events
-		TmfAbstractAnalysisRequirement eventsReq = new TmfAnalysisEventRequirement(requiredEvents, PriorityLevel.MANDATORY);
-			requirements = ImmutableSet.of(eventsReq);
-			fAnalysisRequirements = requirements;
-		}
-		return requirements;
-	}
-	</pre>
+~~~java
+@Override
+public Iterable<TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
+	Set<TmfAbstractAnalysisRequirement> requirements = fAnalysisRequirements;
+	if (requirements == null) {
+	Set<String> requiredEvents = ImmutableSet.of(
+		"ust_master:CREATE",
+		"ust_master:START",
+	);
+	// Initialize the requirements for the analysis: events
+	TmfAbstractAnalysisRequirement eventsReq = 
+		new TmfAnalysisEventRequirement(requiredEvents, 
+										PriorityLevel.MANDATORY);
+	requirements = ImmutableSet.of(eventsReq);
+	fAnalysisRequirements = requirements;
+	return requirements;
+}
+~~~
 
 ---
 title: Exercise: Add Analysis Requirements
 subtitle: 
+content_class: smaller
 
 - Reset to **TRACECOMPASS3.2_START**
-- Open class <code>ProcessingTimeAnalysis</code> 
-- Override method <code>getAnalysisRequirements()</code>
-- Create an <code>TmfAnalysisEventRequirement</code> for event names
+- Open class `ProcessingTimeAnalysis` 
+- Override method `getAnalysisRequirements()`
+- Create an `TmfAnalysisEventRequirement` for event names
 	- Mandatory event names: ust_master:CREATE, ust_master:START, ust_master:STOP, ust_master:END, ust_master:PROCESS_INIT, ust_master:PROCESS_START, ust_master:PROCESS_END
-- Return Iterable over the analysis requirements
+- Return an `Iterable` over the analysis requirements
 - Run Trace Compass and explore the Project Explorer
-	- What happens if one event name is missing?
+	- What would happens if one event name is missing?
 	- Explore the help (context-sensitive menu) in that case 
 - **Go!**
 
@@ -616,65 +636,72 @@ subtitle:
 - Default values can be set as part of analysis extension
 - Add parameter provider to analysis in plugin.xml file
 
-	<pre class="prettyprint" data-lang="DTD">
+~~~dtd
 		<!ELEMENT parameterProvider (analysisId)>
 		<!ATTLIST parameterProvider
 		class CDATA #REQUIRED>
-	</pre>
+~~~
 
-- _class_: The class that contains this analysis parameter provider.
-	- Implement <code>IAnalysisParameterProvider</code>
-	- Extend <code>TmfAbstractAnalysisParameterProvider</code>
+- **class**: The class that contains this analysis parameter provider.
+	- Implement `IAnalysisParameterProvider`
+	- Extend `TmfAbstractAnalysisParameterProvider`
 - Use listener to register another view to be notified when selection changes
 
 ---
 title: Parameter Provider Example
 subtitle:
+content_class: smaller
 
 - 
-	<pre class="prettyprint" data-lang="java">
-	public class MyAnalysisParamProvider extends TmfAbstractAnalysisParamProvider {
-		@Override
-		public String getName() {
-			return "My Analysis Provider";
-		}
-		@Override
-		public Object getParameter(String name) {
+~~~java
+public class MyAnalysisParamProvider extends TmfAbstractAnalysisParamProvider {
+	@Override
+	public String getName() {
+		return "My Analysis Provider";
+	}
+	@Override
+	public Object getParameter(String name) {
 		if (name.equals("ThreadId")) {
-			return new Integer("1234");
+		return new Integer("1234");
 		}
 		return null;
-		}
-		@Override
-		public boolean appliesToTrace(ITmfTrace trace) {
-			return (trace instanceof LttngUstTrace);
-		}
 	}
-	</pre>
+	@Override
+	public boolean appliesToTrace(ITmfTrace trace) {
+		return (trace instanceof LttngUstTrace);
+	}
+}
+~~~
 
 ---
 
-title: Dependent Analyses 
+title: Dependent Analyses
 subtitle:
 
 - An analysis can depend on other analyses
 - Dependent analysis need to execute beforehand
 - Dependent analysis will be scheduled automatically
-- Implement TmfAbstractAnalysisModule#getDependentAnalyses()
+- Implement `TmfAbstractAnalysisModule#getDependentAnalyses()`
 
-	<pre class="prettyprint" data-lang="java">
-	protected Iterable<IAnalysisModule> getDependentAnalyses() {
-		ITmfTrace trace = getTrace();
-		if (trace == null) {
-			return Collections.EMPTY_SET;
-		}
-		IAnalysisModule module = trace.getAnalysisModule(TidAnalysisModule.ID);
-		if (module == null) {
-		    return Collections.EMPTY_SET;
-		}
-		return ImmutableSet.of(module);
+---
+
+title: Dependent Analyses (2)
+subtitle:
+content_class: smaller
+
+~~~java
+protected Iterable<IAnalysisModule> getDependentAnalyses() {
+	ITmfTrace trace = getTrace();
+	if (trace == null) {
+		return Collections.EMPTY_SET;
 	}
-	</pre>
+	IAnalysisModule module = trace.getAnalysisModule(TidAnalysisModule.ID);
+	if (module == null) {
+	    return Collections.EMPTY_SET;
+	}
+	return ImmutableSet.of(module);
+}
+~~~
 
 ---
 
@@ -683,27 +710,32 @@ subtitle:
 
 - Analysis can have one or more outputs
 - Typically it's an Eclipse view
-- All analysis outputs implement <code>ITmfAnalysisOutput</code>
-- For Eclipse views, use class <code>TmfAnalysisViewOutput</code>
+- All analysis outputs implement `ITmfAnalysisOutput`
+- For Eclipse views, use class `TmfAnalysisViewOutput`
 - Shown in Project Explorer under the traces
+---
+
+title: Analysis Output (2)
+subtitle: 
+
 - Associates an output with an analysis module or a class of analysis modules in plugin.xml
 
-	<pre class="prettyprint" data-lang="DTD">
+~~~dtd
 	<!ELEMENT output (analysisId | analysisModuleClass)>
 	<!ATTLIST output
-	class CDATA #REQUIRED
-	id    CDATA #IMPLIED>
-	</pre>
+		class CDATA #REQUIRED
+		id    CDATA #IMPLIED>
+~~~
 
 - 
-- _class_: The class of this output.
-- _id_: An ID for this output. For example, for a view, it would be the view ID.
+- **class**: The class of this output.
+- **id**: An ID for this output. For example, for a view, it would be the view ID.
 
 ---
 title: Plug-in Extension Point
 subtitle: Plug-in Manifest Editor
 
-- Right-click on <code>org.eclipse.linuxtools.tmf.core.analysis</code> -> New -> output
+- Right-click on `org.eclipse.linuxtools.tmf.core.analysis` -> New -> output
 	- Fill in class of output and id of view
 - Right-click on output -> New -> analysisModuleClass
 	- Fill-in id of analysis
@@ -724,17 +756,18 @@ subtitle:
 ---
 title: Exercise: Create an output
 subtitle: 
+content_class: smaller
 
 - Reset to **TRACECOMPASS3.3_START**
 - Create a Eclipse view (see Plug-in Development course)
-	- _id_: <code>org.eclipse.tracecompass.training.example.processing.states</code>
+	- _id_: `org.eclipse.tracecompass.training.example.processing.states`
 	- _name_: Processing States
-	- _class_: <code>ProcessingStatesView</code>
+	- _class_: `ProcessingStatesView`
 - Add an output
 	- _class_: org.eclipse.tracecompass.tmf.ui.analysis.TmfAnalysisViewOutput
-	- _id_: <code>org.eclipse.tracecompass.training.example.processing.states</code>
+	- _id_: org.eclipse.tracecompass.training.example.processing.states
 - Assign to analysis
-	_class_: <code>org.eclipse.tracecompass.training.example.ProcessingTimeAnalysis</code>
+	_class_: org.eclipse.tracecompass.training.example.ProcessingTimeAnalysis
 - Run Trace Compass, open trace and view (from Project Explorer)
 - **Go!**	
 
@@ -775,15 +808,15 @@ subtitle:
 title: State System Definitions
 subtitle:
 
-- Attribute
+- **Attribute**
 	- Smallest element of a state
 	- Has a State Value
 	- Changes over time
-- Attribute Tree: 
+- **Attribute Tree:** 
 	- Tree-like structure
 	- Each attribute can have a value and sub-attributes
 	- Access attributes using a path
-- Quark:
+- **Quark**:
 	- Unique, constant identifier of an attribute
 	- Makes faster queries
 
@@ -791,18 +824,18 @@ subtitle:
 title: State System Definitions (2)
 subtitle:
 
-- State Interval
+- **State Interval**
 	- State intervals are returned when querying the state system
 
-- State History
+- **State History**
 	- Storage container of all the state intervals
-	- State system backend determines how state history is stored
+	- Backend determines how state history is stored
 	- State history can be on disk or in memory 
 
-- Queries
+- **Queries**
 	- Queries return state intervals
-	- Full query: give the whole state of model for given timestamp
-	- Single querY: Returns the state of a particular attribute for the given timestamp
+	- Full query: Whole state of model for given timestamp
+	- Single query: State of a particular attribute for the given timestamp
 
 ---
 
@@ -812,105 +845,107 @@ subtitle:
 - Linux Kernel State System
 - Example path: Processes/1001/PPID
 
-	<pre>
+~~~
 	  |- CPUs
-	  |  |- &lt;CPU number&gt; -&gt; CPU Status
+	  |  |- <CPU-number> -> CPU Status
 	  |     |- CURRENT_THREAD
 	  |     |- SOFT_IRQS
-	  |     |  |- &lt;Soft IRQ number&gt; -&gt; Soft IRQ Status
+	  |     |  |- <Soft-IRQ-number> -> Soft IRQ Status
 	  |     |- IRQS
-	  |        |- &lt;IRQ number&gt; -&gt; IRQ Status
+	  |        |- <IRQ-number> -> IRQ Status
 	  |- THREADS
-	     |- &lt;Thread number&gt; -&gt; Thread Status
+	     |- <Thread-number> -> Thread Status
 	        |- PPID
 	        |- EXEC_NAME
 	        |- PRIO
 	        |- SYSTEM_CALL
-	  </pre>
+~~~
 
 ---
 
 title: State System API
 subtitle: 
 
-- State value interface: <code>ITmfStateValue</code>
-- State interval interface: <code>ITmfStateInterval</code>
-- Read and write interface to the state system: <code>ITmfStateSystemBuilder</code>
-- Query interface: <code>ITmfStateSystem</code>
-- Analysis using a state system: <code>TmfStateSystemAnalysisModule</code>
-- All state provider implement <code>ITmfStateProvider</code>
-	- Extend abstract class <code>AbstractTmfStateProvider</code>
-- Create a state system and assign a backend: <code>StateSystemFactory</code>
+- State value interface: `ITmfStateValue`
+- State interval interface: `ITmfStateInterval`
+- Read and write interface to the state system: `ITmfStateSystemBuilder`
+- Query interface: `ITmfStateSystem`
+- Analysis using a state system: `TmfStateSystemAnalysisModule`
+- All state provider implement `ITmfStateProvider`
+	- Extend abstract class `AbstractTmfStateProvider`
+- Create a state system and assign a backend: `StateSystemFactory`
 
 ---
 title: State Value Interface
 subtitle: 
 
-- All state values implement interface <code>ITmfStateValue</code>
+- All state values implement interface `ITmfStateValue`
 
-	<pre class="prettyprint" data-lang="java">
-	public enum Type {NULL, INTEGER, LONG, DOUBLE, STRING, CUSTOM;}
-	</pre>
+~~~java
 
-- Create a state value using state value factory <code>TmfStateValue</code>, for example:
+public enum Type {NULL, INTEGER, LONG, DOUBLE, STRING, CUSTOM;}
+~~~
 
-	<pre class="prettyprint" data-lang="java">
-	ITmfStateValue value = TmfStateValue.nullValue();
-	ITmfStateValue intValue = TmfStateValue.newValueInt();
-	ITmfStateValue longValue = TmfStateValue.newValueLong();
-	</pre>	
+- Create a state value using state value factory `TmfStateValue`, for example:
 
-- Read the value, for example: <code>IntegerStateValue</code>
+~~~java
+ITmfStateValue value = TmfStateValue.nullValue();
+ITmfStateValue intValue = TmfStateValue.newValueInt();
+ITmfStateValue longValue = TmfStateValue.newValueLong();
+~~~
 
-	<pre class="prettyprint" data-lang="java">
-	ITmfStateInterval interval = getInterval();
-	if (interval.getValue().getType() == Type.Integer) {
-		int retVal = interval.getValue().unboxInt();
-	}
-	</pre>
+---
+title: State Value Interface
+subtitle: 
+
+- Read the value, for example: `IntegerStateValue`
+
+~~~java
+ITmfStateValue value = getValue();
+if (value.getType() == Type.Integer) {
+	int retVal = interval.getValue().unboxInt();
+}
+~~~
 
 ---
 title: State Interval Interface
 subtitle: 
 
-- All state intervals implement interface <code>ITmfStateInterval</code>
+- All state intervals implement interface `ITmfStateInterval`
 - Has a start and end time
 
-	<pre class="prettyprint" data-lang="java">
-	long getStartTime();
-	long getEndTime();
-	</pre>
+~~~java
+long getStartTime();
+long getEndTime();
+~~~
 	
 - Provides the quark and state value
 
-	<pre class="prettyprint" data-lang="java">
-	int getAttribute();
-	ITmfStateValue getStateValue();
-	</pre>
+~~~java
+int getAttribute();
+ITmfStateValue getStateValue();
+~~~
 
 - Validates whether it intersects with a given timestamp
 
-	<pre class="prettyprint" data-lang="java">
+~~~
 	boolean intersects(long timestamp);
-	</pre>
+~~~
 
 ---
 
 title: Building a state system
 subtitle: ITmfStateSystemBuilder
 
-- Main interface used during state system building: <code>ITmfStateSystemBuilder</code>
+- Main interface used during state system building: `ITmfStateSystemBuilder`
 - Getting/adding an attribute quark using an absolute path 
-
-	<pre class="prettyprint" data-lang="java">
-	int getQuarkAbsoluteAndAdd(String... attribute);
-    </pre>
-
+~~~java
+int getQuarkAbsoluteAndAdd(String... attribute);
+~~~
 - Getting/adding an attribute quark using a relative path
-
-	<pre class="prettyprint" data-lang="java">
-	int getQuarkRelativeAndAdd(int startingNodeQuark, String... subPath);
-    </pre>
+~~~java
+int getQuarkRelativeAndAdd(int startingNodeQuark, String... subPath);
+~~~
 
 ---
 
@@ -920,18 +955,18 @@ subtitle: ITmfStateSystemBuilder
 - Modifying a state value when state change occurs
 - Note: timestamp is a long value
 
-	<pre class="prettyprint" data-lang="java">
-	void modifyAttribute(long t, @NonNull ITmfStateValue value, int attributeQuark)
-		throws StateValueTypeException;
-	</pre>
+~~~java
+void modifyAttribute(long t, ITmfStateValue value, int attributeQuark)
+	throws StateValueTypeException;
+~~~
 
 - Update an ongoing state value 
 	- When getting value only at the end of the state
 	- e.g. return value of a function call
 
-	<pre class="prettyprint" data-lang="java">
-	void updateOngoingState(@NonNull ITmfStateValue newValue, int attributeQuark);
-	</pre>
+~~~java
+void updateOngoingState(ITmfStateValue newValue, int attributeQuark);
+~~~
 
 ---
 
@@ -940,99 +975,104 @@ subtitle: ITmfStateSystemBuilder
 
 - Push and pop a state value on a stack
 
-	<pre class="prettyprint" data-lang="java">
-	void pushAttribute(long t, @NonNull ITmfStateValue value, int attributeQuark)
-		throws StateValueTypeException;
-	</pre>
+~~~java
+void pushAttribute(long t, ITmfStateValue value, int attributeQuark)
+	throws StateValueTypeException;
+~~~
 
-	<pre class="prettyprint" data-lang="java">
-	ITmfStateValue popAttribute(long t, int attributeQuark)
-		throws StateValueTypeException;
-	</pre>
+~~~java
+ITmfStateValue popAttribute(long t, int attributeQuark)
+	throws StateValueTypeException;
+~~~
 
 ---
 title: State System Analysis Module
 subtitle: TmfStateSystemAnalysisModule
 
-- State system analysis modules typically extend <code>TmfStateSystemAnalysisModule</code>
+- State system analysis modules typically extend `TmfStateSystemAnalysisModule`
 - By default, full history on disk (default can be overwritten)
 - Takes care of reading the trace using an event request
 - Handles cancellation of analysis by user
 - State system are stored in hidden directory **.tracing** in workspace
-	- &lt;workspace&gt;/&lt;project&gt;/.tracing/&lt;trace&gt;/
-	- State system file is: <code>&lt;analysis id&gt;.ht</code>
+	- `<workspace>/<project>/.tracing/<trace>/`
+	- State system file is: `<analysis id>.ht`
 	- Delete state systems: Right-click on trace -> **Delete Supplementary Files...**
 
 ---
 title: State System Analysis Module (2)
 subtitle: TmfStateSystemAnalysisModule
+content_class: smaller
 
 - Access state system using utility method
-	<pre class="prettyprint" data-lang="java">
-	public static ITmfStateSystem getStateSystem(ITmfTrace trace, String moduleId);
-	}
+~~~java
+
+public static ITmfStateSystem getStateSystem(ITmfTrace trace, String moduleId);
+}
+~~~
 - Create state provider class 
-<pre class="prettyprint" data-lang="java">
-	protected ITmfStateProvider createStateProvider() {
-		ITmfTrace trace = getTrace();
-		if (trace == null) {
-			throw new IllegalStateException();
-		}
-		return new ProcessingTimeStateProvider(trace);
+~~~java
+protected ITmfStateProvider createStateProvider() {
+	ITmfTrace trace = getTrace();
+	if (trace == null) {
+		throw new IllegalStateException();
 	}
-</pre>
+	return new ProcessingTimeStateProvider(trace);
+}
+~~~
 
 ---
 title: State provider
 subtitle: 
 
-- All state provider implement interface <code>ITmfStateProvider</code>
-- Typically, extend <code>AbstractTmfStateProvider</code>
+- All state provider implement interface `ITmfStateProvider`
+- Typically, extend `AbstractTmfStateProvider`
 	- Uses a buffering scheme to not block event request
-- Implement <code>ITmfStateProvider</code>#getVersion() 
+- Implement `ITmfStateProvider#getVersion()`
 	- To force recreation of state system change return value
-- Implement <code>ITmfStateProvider</code>#getInstance()
-- Implement <code>AbstractTmfStateProvider</code>#eventHandle()
+- Implement `ITmfStateProvider#getInstance()`
+- Implement `AbstractTmfStateProvider#eventHandle()`
 
 ---
 title: State provider (2)
 subtitle:
 content_class: smaller 
 
-<pre class="prettyprint" data-lang="java" >
-	protected void eventHandle(@NonNull ITmfEvent event) {
-		final ITmfStateSystemBuilder stateSystem = getStateSystemBuilder();
-		switch (event.getName()) {
-		case IEventConstants.CREATE_EVENT:
-			// get event field with name
-			String requester = event.getContent().getFieldValue(String.class, "requester");
+~~~java
+protected void eventHandle(ITmfEvent event) {
+	final ITmfStateSystemBuilder stateSystem = getStateSystemBuilder();
+	switch (event.getName()) {
+	case IEventConstants.CREATE_EVENT:
+		// get event field with name
+		String requester = 
+			event.getContent().getFieldValue(String.class, "requester");
 
-			// get quark of attribute for path Requester/&lt;requester&gt;
-			int quark = stateSystem.getQuarkAbsoluteAndAdd("Requester", requester);
+		// get quark of attribute for path Requester/<requester&gt;
+		int quark = stateSystem.getQuarkAbsoluteAndAdd("Requester", requester);
 
-			// Create new state value
-			ITmfStateValue stateValue = TmfStateValue.newValueInt
-				(IEventConstants.ProcessingStates.INITIALIZING.ordinal());
+		// Create new state value
+		ITmfStateValue stateValue = TmfStateValue.newValueInt
+			(IEventConstants.ProcessingStates.INITIALIZING.ordinal());
 
-			// get time of event
-			long t = event.getTimestamp().getValue();
+		// get time of event
+		long t = event.getTimestamp().getValue();
 
-			// apply state change
-			stateSystem.modifyAttribute(t, stateValue, quark);
-			return;
-		}
+		// apply state change
+		stateSystem.modifyAttribute(t, stateValue, quark);
+		return;
 	}
-</pre>
+}
+~~~
 
 ---
 title: Exercise: Implement a state provider
-subtitle: 
+subtitle:
+content_class: smaller
 
 - Reset to **TRACECOMPASS4.1_START**
-- Open <code>ProcessingTimeAnalysis</code>
+- Open `ProcessingTimeAnalysis`
 	- Implement createStateProvider()
-	- Return an instance of <code>ProcessingTimeStateProvider</code> (class already exists) 
-- Implement <code>ProcessingTimeStateProvider</code>
+	- Return an instance of `ProcessingTimeStateProvider` (class already exists) 
+- Implement `ProcessingTimeStateProvider`
 	- See next slides for state machine and attribute tree
 - Run Trace Compass and open trace
 - Open State System Explorer (Window -> Show View -> Tracing -> State System Explorer)
@@ -1054,10 +1094,10 @@ title: Exercise Attribute Tree
 subtitle:
 
  
-	<pre>
+~~~
 	  |- Requester
-	        |- &lt;requester&gt; -&gt; State Value
-	  </pre>
+	        |- <requester> -> State Value
+~~~
 
 - Example path: Requester/&lt;requester&gt;
 	- Where &lt;requester&gt; is taken from event field of CTF event
@@ -1072,7 +1112,7 @@ title: Bonus exercise: 2nd State Machine
 subtitle: 
 
 - Reset to **TRACECOMPASS4.2_START**
-- Update <code>ProcessingTimeStateProvider</code> (see state machine on next slide)
+- Update `ProcessingTimeStateProvider` (see state machine on next slide)
 	- Hint: Use attribute tree layout shown in file 
 - Run Trace Compass and open trace
 - Open State System Explorer
@@ -1092,11 +1132,11 @@ title: Exercise Attribute Tree
 subtitle:
 
  
-	<pre>
+~~~
 	  |- Requester
-	        |- &lt;requester&gt; -&gt; State Value
-	              |-&lt;id&gt;   -&gt; State Value
-	  </pre>
+	        |- <requester> -> State Value
+	              |-<id>   -> State Value
+~~~
 
 - Example path: Requester/&lt;requester&gt;/&lt;id&gt;
 	- Where &lt;requester&gt; is taken from event field of CTF event
@@ -1119,22 +1159,23 @@ subtitle:
 title: Query a state system
 subtitle: ITmfStateSystem
 
-- Main interface for accessing state system <code>ITmfStateSystem</code>
+- Main interface for accessing state system `ITmfStateSystem`
 - Use after state system is build
 - Throws an exception if attribute doesn't exist
 - Getting a quark of an attribute from absolute path
 
-	<pre class="prettyprint" data-lang="java">
-	int getQuarkAbsolute(String... attribute)
-		throws AttributeNotFoundException;
-	</pre>
+~~~java
+int getQuarkAbsolute(String... attribute)
+	throws AttributeNotFoundException;
+~~~
 
 - Getting a quark from a relative path
 
-	<pre class="prettyprint" data-lang="java">
-	int getQuarkRelative(int startingNodeQuark, String... subPath)
-		throws AttributeNotFoundException;
-	</pre>
+~~~java
+
+int getQuarkRelative(int startingNodeQuark, String... subPath)
+	throws AttributeNotFoundException;
+~~~
 
 ---
 title: Query a state system (2)
@@ -1142,18 +1183,19 @@ subtitle: ITmfStateSystem
 
 - Getting a quark of an optional attribute from absolute path
 
-	<pre class="prettyprint" data-lang="java">
-    int optQuarkAbsolute(String... attribute)
-            throws AttributeNotFoundException;
-	</pre>
+~~~java
+int optQuarkAbsolute(String... attribute)
+	throws AttributeNotFoundException;
+~~~
 
 - Getting a quark of an optional attribute from relative path
 
-	<pre class="prettyprint" data-lang="java">
-	int optQuarkRelative(int startingNodeQuark, String... subPath)
-		throws AttributeNotFoundException;
-	</pre>
-- Return <code>#INVALID_ATTRIBUTE</code> (-2) if it doesn't exist
+~~~java
+
+int optQuarkRelative(int startingNodeQuark, String... subPath)
+	throws AttributeNotFoundException;
+~~~
+- Return `#INVALID_ATTRIBUTE` (-2) if it doesn't exist
 
 ---
 title: Query a state system (3)
@@ -1161,22 +1203,23 @@ subtitle: ITmfStateSystem
 
 - Getting a list of quarks from a wildcarded path ("*" or "..")
 
-	<pre class="prettyprint" data-lang="java">
-    List<Integer> getQuarks(String... pattern);
-	</pre>
+~~~java
+List<Integer> getQuarks(String... pattern);
+~~~
 
 - Getting a list of quarks from a wildcarded path relatively ("*" or "..")
 
-	<pre class="prettyprint" data-lang="java">
-    List<Integer> getQuarks(int startingNodeQuark, String... pattern);
-	</pre>
+~~~java
+
+List<Integer> getQuarks(int startingNodeQuark, String... pattern);
+~~~
 
 - Waiting until a state system is build (with or without timeout)
 
-	<pre class="prettyprint" data-lang="java">
-	void waitUntilBuilt();
-	void waitUntilBuilt(long timeout);
-	</pre>
+~~~java
+void waitUntilBuilt();
+void waitUntilBuilt(long timeout);
+~~~
 
 ---
 title: Query a state system (4)
@@ -1184,39 +1227,41 @@ subtitle: ITmfStateSystem
 
 - Querying a single state at a given timestamp
 
-	<pre class="prettyprint" data-lang="java">
-	ITmfStateInterval querySingleState(long t, int attributeQuark)
-		throws StateSystemDisposedException;
-	</pre>
+~~~java
+ITmfStateInterval querySingleState(long t, int attributeQuark)
+	throws StateSystemDisposedException;
+~~~
 
 
 - Querying full state at a given timestamp
 
-	<pre class="prettyprint" data-lang="java">
-	List&lt;ITmfStateInterval&gt; queryFullState(long t)
-		throws StateSystemDisposedException;
-	</pre>
+~~~java
+List<ITmfStateInterval> queryFullState(long t)
+	throws StateSystemDisposedException;
+~~~
 
 ---
 title: Query a state system (5)
 subtitle: StateSystemUtils
+content_class: smaller
 
 - Utility class to query history range
 - Getting all the states for given quark between start and end time
 
-	<pre class="prettyprint" data-lang="java">
-	public static List<ITmfStateInterval> queryHistoryRange(ITmfStateSystem ss, int attributeQuark, 
-		long t1, long t2)
-			throws AttributeNotFoundException, StateSystemDisposedException
-	</pre>
+~~~java
+public static List<ITmfStateInterval> queryHistoryRange(
+	ITmfStateSystem ss, int attributeQuark, long t1, long t2)
+		throws AttributeNotFoundException, StateSystemDisposedException
+~~~
 
 - Getting all the states for given quark between start and end time with resolution
 
-	<pre class="prettyprint" data-lang="java">
-	public static List<ITmfStateInterval> queryHistoryRange(ITmfStateSystem ss, int attributeQuark, 
-		long t1, long t2, long resolution, IProgressMonitor monitor)
-			throws AttributeNotFoundException, StateSystemDisposedException
-	</pre>
+~~~java
+public static List<ITmfStateInterval> queryHistoryRange(
+	ITmfStateSystem ss, int attributeQuark, long t1, long t2, long resolution, 
+	IProgressMonitor monitor)
+		throws AttributeNotFoundException, StateSystemDisposedException
+~~~
 
 ---
 title: Exercise: Query a state system
@@ -1225,8 +1270,8 @@ subtitle:
 - Reset to **TRACECOMPASS4.4_START**
 - Open view class ProcessingStatesView
 	- Implement TODOs to query sate system in method print states
-	- Use <code>ITmfStateSystem</code> interface and utility <code>StateSystemUtils</code> 
-	- Use method outputText() to print text on screen
+	- Use `ITmfStateSystem` interface and utility `StateSystemUtils` 
+	- Use method `outputText()` to print text on screen
 - **Go!**	
 
 ---
@@ -1251,46 +1296,45 @@ subtitle: Time Graph Views
 - Searching and Filtering in Time Graph View
 
 ---
-title: Time Graph View Overview
+title: Time Graph Viewer Overview
 subtitle: 
 
-<center><img src="images/TimeGraphView-explained.png" width="85%" height="85%"/></center>
+<center><img src="images/TimeGraphView-explained.png" width="90%" height="90%"/></center>
 
 ---
 title: Time Graph Viewer Overview
 subtitle:
 
-- Visualizes states over time
+- Visualizes **states** over time
 	- For example, processes, threads, cores, IRQs...
-- Common widget library on top of SWT
 - Provides common features
-	- Common Time Axis (TimeGraphScale)
-	- Marker Axis (Marker Axis)	
-	- Navigation with mouse, keyboard and toolbar buttons
-	- Zoom-in and out
-	- Searching (rows!)
-	- Highlight of regions interests (makers or time selection)
-- Supports drawing of arrows 
-- Tree structure that supports columns
+	- Common **Time Axis** (TimeGraphScale)
+	- **Marker Axis**	
+	- **Navigation** with mouse, keyboard and toolbar buttons
+	- **Zooming**
+	- **Searching** (rows!)
+	- **Highlighting** of regions interests (makers or time selection)
+- Supports drawing of **arrows**
+- **Tree** structure that supports **columns**
 
 ---
 title: How to create a Time Graph viewer?
 subtitle: 
 
-- Create a Time Graph viewer instance <code>TimeGraphViewer</code>
+- Create a Time Graph viewer instance: `TimeGraphViewer`
 - Define content provider to provide Time Graph Model root entries
 - Define a presentation provider to define how to display states
 - Define a filter content/label provider and columns for filter dialog
 - Provide a Time Graph Model
 
-	<pre class="prettyprint" data-lang="java">
-	TimeGraphViewer viewer = new TimeGraphViewer();
-	viewer.setContentProvider(new MyTimeGraphContentProvider());
-	viewer.setPresentationProvider(new MyPresentationProvider);
-	viewer.setFilterLabelProvider(new MyFilterLabelProvider());
-	viewer.setFilterColumns(fFilterColumns);
-	viewer.setInput(getModel();
-	</pre>
+~~~java
+TimeGraphViewer viewer = new TimeGraphViewer();
+viewer.setContentProvider(new MyTimeGraphContentProvider());
+viewer.setPresentationProvider(new MyPresentationProvider);
+viewer.setFilterLabelProvider(new MyFilterLabelProvider());
+viewer.setFilterColumns(fFilterColumns);
+viewer.setInput(getModel();
+~~~
 
 ---
 title: Time Graph Model
@@ -1302,22 +1346,22 @@ subtitle:
 
 title: Time Graph Model (2)
 subtitle: ITimeGraphEntry
+content_class: smaller
 
 <center><img src="images/TimeGraphEntries.png" width="70%" height="70%"/></center>
 
-- All time graph models implement interface <code>ITimeGraphEntry</code>
-- 	Typically models extend default implementation <code>TimeGraphEntry</code>
-- It's a tree structure: ITimeGraphEntry has 0..* <code>ITimeGraphEntry</code> children
-- Use content provider the root entries can be supplied for a model object
+- All time graph models implement interface `ITimeGraphEntry`
+- 	Typically models extend default implementation `TimeGraphEntry`
+- It's a tree structure: ITimeGraphEntry has 0..* `ITimeGraphEntry` children
+- Using a content provider the root entries can be supplied for a model object
 
-	<pre class="prettyprint" data-lang="java">
-	ITimeGraphEntry getParent();
-	List&lt;ITimeGraphEntry&gt; getChildren();
-	String getName();
-	boolean hasTimeEvents();
-	Iterator&lt;? extends ITimeEvent&lt; getTimeEventsIterator();
-	</pre>
-
+~~~java
+ITimeGraphEntry getParent();
+List<ITimeGraphEntry> getChildren();
+String getName();
+boolean hasTimeEvents();
+Iterator<? extends ITimeEvent> getTimeEventsIterator();
+~~~
 
 ---
 title: Time Graph Model (3)
@@ -1325,36 +1369,37 @@ subtitle: ITimeEvent
 
 <center><img src="images/TimeEvents.png" width="50%" height="50%"/></center>
 
-- Each <code>ITimeGraphEntry</code> has 0..* more time events
+- Each `ITimeGraphEntry` has 0..* more time events
 - Time events define the state intervals to be displayed
-- All time events implement interface <code>ITimeEvent</code>
-- Typically time events extend default implementation <code>TimeEvent</code>
+- All time events implement interface `ITimeEvent`
+- Typically time events extend default implementation `TimeEvent`
 
-	<pre class="prettyprint" data-lang="java">
-	ITimeGraphEntry getEntry();
-	long getTime();
-	long getDuration();
-	</pre>
+~~~java
+ITimeGraphEntry getEntry();
+long getTime();
+long getDuration();
+~~~
 
 
 ---
 title: Presentation Provider
 subtitle: 
+content_class: smaller
 
-- Provides the colors to be used for each time event
-- Defines the tooltip to show when hovering over a time event
-- Provides possibility to draw overlays over an time graph entry, time event or control
-- Can customizes the entry height
-- All presentation providers implement interface <code>ITimeGraphPresentationProvider</code>
-- Typically presentation provider extends <code>TimeGraphPresentationProvider</code>
+- Provides the **colors** to be used for each time event
+- Defines the **tooltip** to show when hovering over a time event
+- Provides possibility to draw **overlays**
+- Can customizes the entry **height**
+- All presentation providers implement interface `ITimeGraphPresentationProvider`
+- Typically presentation provider extends `TimeGraphPresentationProvider`
 
-	<pre class="prettyprint" data-lang="java">
-	StateItem[] getStateTable();
-	int getStateTableIndex(ITimeEvent event);
-	void postDrawEvent(ITimeEvent event, Rectangle bounds, GC gc);
-	Map&lt;String, String&gt; getEventHoverToolTipInfo(ITimeEvent event);
-	// ...
-	</pre>
+~~~java
+StateItem[] getStateTable();
+int getStateTableIndex(ITimeEvent event);
+void postDrawEvent(ITimeEvent event, Rectangle bounds, GC gc);
+Map<String, String> getEventHoverToolTipInfo(ITimeEvent event);
+// ...
+~~~
 
 ---
 title: Exercise: Create a Time Graph Viewer
@@ -1364,7 +1409,7 @@ subtitle:
 - Open view class ProcessingStatesView
 - In createPartControl()
 	- create new instance of TimeGraphViewer
-	- set presentation provider (<code>ProcessingStatesPresentationProvider</code>)
+	- set presentation provider (`ProcessingStatesPresentationProvider`)
 - Implement time graph model in method fillTimeGraph() (see TODOs)
 - Run Trace Compass and explore the Time Graph Viewer features
 - Question: What limitations do you foresee with this implementation?
@@ -1383,15 +1428,15 @@ subtitle:
 title: Time Graph View Overview
 subtitle: 
 
-- Eclipse view wrapping Time Graph Viewer 
-- Common abstract class with re-occurring and re-usable code
-	- Handles and sends signals (e.g. trace opened, time range selected)
-	- Loads the view content
-	- Provides default set of buttons
-	- Common synchronized time axis
-- Provides support for lazy loading of viewer
-- Provides hooks to add overlay markers
-- Support for link events (arrows)
+- **Eclipse view** wrapping Time Graph Viewer 
+- Common **abstract class** with re-occurring and re-usable code
+	- **Handles** and sends signals (e.g. trace opened, time range selected)
+	- **Loads** the view content
+	- **Provides** default set of buttons
+	- Common synchronized **time axis** with other views
+- Provides support for **lazy loading** of viewer
+- Provides hooks to add overlay **markers**
+- Support for link events, i.e. **arrows**
 - Can interface with state systems
 
 ---
@@ -1399,12 +1444,12 @@ title: Time Graph View Overview (2)
 subtitle: 
 
 - Typically views extend abstract classes
-	- <code>AbstractTimeGraphView</code>
-	- <code>AbstractStateSystemTimeGraphView</code>
-- Use <code>AbstractTimeGraphView</code> to populate each row at a time
+	- `AbstractTimeGraphView`
+	- `AbstractStateSystemTimeGraphView`
+- Use `AbstractTimeGraphView` to populate each row at a time
 	- Small number of rows
 	- Works with or without state systems
-- Use <code>AbstractStateSystemTimeGraphView</code> to populate all entries by time
+- Use `AbstractStateSystemTimeGraphView` to populate all entries by time
 	- High number of rows
 	- Uses full state system queries (more efficient query)
 	- Works only with state systems
@@ -1418,69 +1463,74 @@ subtitle:
 ---
 title: Create a Time Graph View
 subtitle:
+content_class: smaller
 
-- 
+~~~java
+public class ProcessingStatesView extends AbstractTimeGraphView {
 
-	<pre class="prettyprint" data-lang="java">
-	public class ProcessingStatesView extends AbstractTimeGraphView {
-	public ProcessingStatesView() {
-		super("my.view.id", new ProcessingStatesPresentationProvider());
-		// Enable entry filtering
-		setFilterColumns(FILTER_COLUMNS);
-		setFilterLabelProvider(new FilterLabelProvider());
-	}
-	@Override
-	protected void buildEntryList(ITmfTrace trace, ITmfTrace parentTrace, IProgressMonitor monitor) {
-		// TODO
-	}
-	@Override
-	protected List&lt;ITimeEvent&gt; getEventList(TimeGraphEntry entry, long startTime, long endTime,
-		long resolution, IProgressMonitor monitor) {
-		// TODO
-	}
-	</pre>
-
+// Constructor
+public ProcessingStatesView() {
+	super("my.view.id", new ProcessingStatesPresentationProvider());
+	// Enable entry filtering
+	setFilterColumns(FILTER_COLUMNS);
+	setFilterLabelProvider(new FilterLabelProvider());
+}
+@Override
+protected void buildEntryList(
+	ITmfTrace trace, ITmfTrace parentTrace, IProgressMonitor monitor) {
+	// TODO
+}
+@Override
+protected List<ITimeEvent> getEventList(
+	TimeGraphEntry entry, long startTime, long endTime,	long resolution, 
+	IProgressMonitor monitor) {
+	// TODO
+}
+~~~
+w
 ---
 title: Time Graph View API
 subtitle: AbstractTimeGraphView
 
-- Build thread
-	- Building the list of time graph entries (rows)
-	- Building the list of time events for each time graph entry for whole trace range
-		- To display coarse events before lazy loading of zoom window is complete
-	- Called from base class for each trace in experiment (parentTrace)
-	- Adding root entries to view using <code>AbstractTimeGraphView#addToEntryList()</code>
+- **Build thread**:
+	- Build list of **time graph entries** (rows)
+	- Build list of **time events** for each time graph entry for **whole trace** range
+		- To display coarse events before **lazy loading** of zoom window is complete
+	- Called from base class for each trace in **experiment** (parentTrace)
+	- Adding root entries to view using `AbstractTimeGraphView#addToEntryList()`
 
-	<pre class="prettyprint" data-lang="java">
-	protected abstract void buildEntryList(ITmfTrace trace, ITmfTrace parentTrace,
-		IProgressMonitor monitor);
-	</pre>
+~~~java
+protected abstract void buildEntryList(ITmfTrace trace, 
+	ITmfTrace parentTrace, IProgressMonitor monitor);
+~~~
 
 ---
 title: Time Graph View API (2)
 subtitle: AbstractTimeGraphView
 
-- Zoom thread
-	- Building the time event list for each time graph entry
-	- Per zoom level and display resolution
+- **Zoom thread**:
+	- Build **time event** list for each time graph entry
+	- Per **zoom** level and display **resolution**
 
-	<pre class="prettyprint" data-lang="java">
-	protected abstract List&lt;ITimeEvent&gt; getEventList(TimeGraphEntry entry, long startTime,
-		long endTime, long resolution, IProgressMonitor monitor);
-	</pre>
+~~~java
+protected abstract List<ITimeEvent> getEventList(
+	TimeGraphEntry entry, long startTime, long endTime, 
+	long resolution, IProgressMonitor monitor);
+~~~
 
 ---
 title: Arrows in Time Graph View
 subtitle: AbstractTimeGraphView
 
-- Creates arrows between time graph entries for a given start and end time
+- Creates **arrows** between time graph entries for a given start and end time
 - Computed for the current zoom window
-- Providing a list of linked events implementing interface <code>ILinkEvent</code>
+- Providing a list of linked events implementing interface `ILinkEvent`
 
-	<pre class="prettyprint" data-lang="java">
-	protected List&lt;ILinkEvent&gt; getLinkList(long startTime, long endTime,
-		long resolution, IProgressMonitor monitor);
-	</pre>
+~~~java
+protected List<ILinkEvent> getLinkList(long startTime, 
+	long endTime, long resolution, 
+	IProgressMonitor monitor);
+~~~
 
 - List will be propagated to TimeGraphViewer object
 
@@ -1488,39 +1538,35 @@ subtitle: AbstractTimeGraphView
 title: Markers in Time Graph View
 subtitle: AbstractTimeGraphView
 
-- Markers are overlays in the viewer
+- Markers are **overlays** in the viewer
+- Shown also on ** maker axis**
+- Separated by marker category
 - Bookmarks set by user in Time Graph View or externally
-- Common trace markers defined per trace type
-- View specific markers defined with API below:
-	- Providing a list of marker categories
-
-	<pre class="prettyprint" data-lang="java">
-	protected List&lt;String&gt; getViewMarkerCategories();
-	</pre>
-	
-	- Providing a list of markers
-
-	<pre class="prettyprint" data-lang="java">
-	protected List&lt;IMarkerEvent&gt; getViewMarkerList(long startTime, long endTime,
-		long resolution, IProgressMonitor monitor);
-	</pre>
+- Common **trace markers** can be defined per trace type
+- View specific markers can be defined directly in the view class:
+~~~java
+protected List<String> getViewMarkerCategories();
+protected List<IMarkerEvent> getViewMarkerList(long startTime, 
+	long endTime, long resolution, 
+	IProgressMonitor monitor);
+~~~
 
 ---
-title: Searching and Filtering
+title: Filtering and Searching
 subtitle: 
 
-- Possibility to provide filter for Time Graph Entries (rows)
+- Possibility to provide **filter** for **time graph entries** (rows)
 - Filter dialog uses a regular tree viewer 
 	- Providing columns names and Label provider (extends TreeLabelProvider)
 	- Optional, providing a content provider if needed 
 
-	<pre class="prettyprint" data-lang="java">
-	String[] filterColumns = { "Entry" };
-	setFilterColumns(filterColumns);
-	setFilterLabelProvider(new FilterLabelProvider());
-	</pre>
+~~~java
+String[] filterColumns = { "Entry" };
+setFilterColumns(filterColumns);
+setFilterLabelProvider(new FilterLabelProvider());
+~~~
 
-- Searching for entries is built-in
+- **Searching** for **time graph entries** is built-in:
 	- Use key shortcut **CTRL+F**
 
 ---
@@ -1552,59 +1598,64 @@ subtitle:
 title: Time Graph View API
 subtitle: AbstractStateSystemTimeGraphView
 
-- Populate time graph entries (rows) by time
-- Build thread
+- Populate time graph entries (rows) **by time**
+- **Build thread**:
 	- Call queryStateSystem() in buildEntryList()
 
-	<pre class="prettyprint" data-lang="java">
-	protected void queryFullStates(ITmfStateSystem ss, long start, long end, 
-		long resolution, IProgressMonitor monitor, IQueryHandler handler)
-	</pre>
+~~~java
+protected void queryFullStates(ITmfStateSystem ss, long start, 
+	long end, long resolution, IProgressMonitor monitor,
+	IQueryHandler handler)
+~~~
 
-- Provide call back <code>IQueryHandler</code>
+- Provide call back `IQueryHandler`
 
-	<pre class="prettyprint" data-lang="java">
-	public interface IQueryHandler {
-		void handle(List&lt;List&lt;ITmfStateInterval&gt;&gt; fullStates,
-			@Nullable List&lt;ITmfStateInterval&gt; prevFullState);
-	}
-	</pre>
+~~~java
+public interface IQueryHandler {
+	void handle(List<List<ITmfStateInterval>> fullStates,
+		@Nullable List<ITmfStateInterval> prevFullState);
+}
+~~~
 
 ---
 title: Time Graph View API (2)
 subtitle: AbstractStateSystemTimeGraphView
 
-- Zoom thread
+- **Zoom thread**:
 	- Builds time event list for each time graph entry
 	- Per zoom level and display resolution
 
-	<pre class="prettyprint" data-lang="java">
-	protected abstract List<ITimeEvent> getEventList(TimeGraphEntry tgentry, ITmfStateSystem ss, 
-		List&lt;List&lt;ITmfStateInterval&gt;&gt; fullStates, List&lt;ITmfStateInterval&gt; prevFullState, 
-		IProgressMonitor monitor);
-	</pre>
+~~~java
+protected abstract List<ITimeEvent> getEventList(
+	TimeGraphEntry tgentry, 
+	ITmfStateSystem ss,
+	List<List<ITmfStateInterval>> fullStates,
+	List<ITmfStateInterval> prevFullState, 
+	IProgressMonitor monitor);
+~~~
 
 ---
 title: Time Graph View API (3)
 subtitle: AbstractStateSystemTimeGraphView
 
-- Providing a list of linked events implementing interface <code>ILinkEvent</code>
+- Providing a list of **linked events**
 
-	<pre class="prettyprint" data-lang="java">
-	protected List&lt;ILinkEvent&gt; getLinkList(ITmfStateSystem ss, 
-		List&lt;List&lt;ITmfStateInterval&gt;&gt; fullStates, List&lt;ITmfStateInterval&gt; prevFullState, IProgressMonitor monitor);	
-	</pre>
+~~~java
+protected List<ILinkEvent> getLinkList(ITmfStateSystem ss, 
+	List<List<ITmfStateInterval>> fullStates, 
+	List<ITmfStateInterval> prevFullState, 
+	IProgressMonitor monitor);	
+~~~
 
+- Providing a list of **markers**
 
-- Providing a list of markers
-
-	<pre class="prettyprint" data-lang="java">
-	protected List&lt;IMarkerEvent&gt; getViewMarkerList(ITmfStateSystem ss,
-		List&lt;List&gt;ITmfStateInterval&gt;&gt; fullStates, List&lt;ITmfStateInterval&gt; prevFullState,
-		IProgressMonitor monitor);
-	</pre>
-
----
+~~~java
+protected List<IMarkerEvent> getViewMarkerList(
+	ITmfStateSystem ss,
+	List<List>ITmfStateInterval>> fullStates, 
+	List<ITmfStateInterval> prevFullState,
+	IProgressMonitor monitor);
+~~~
 
 ---
 title: Module 7
@@ -1984,22 +2035,22 @@ content_class: smaller
 
 - XML description
 <br><br>
-<pre class="prettyprint" data-lang="xml">
-    &lt;fsm id="process:processing"&gt;
-	    &lt;precondition event="ust_master:PROCESS_START"/&gt;
-	    &lt;precondition event="ust_master:PROCESS_END"/&gt;
-	    &lt;initialState&gt;
-		    &lt;transition event="ust_master:PROCESS_INIT" target="INITIALIZING" action="process_init:save_id"/&gt;
-	    &lt;/initialState&gt;
-	    &lt;state id="INITIALIZING"&gt;
-		    &lt;transition event="ust_master:PROCESS_START" cond="test_id" target="PROCESSING" action="process_start"/&gt;
-	    &lt;/state&gt;
-	    &lt;state id="PROCESSING"&gt;
-		    &lt;transition event="ust_master:PROCESS_END" cond="test_id" target="END" action="process_end"/&gt;
-	    &lt;/state&gt;
-	    &lt;final id="END"/&gt;
-    &lt;/fsm&gt;
-</pre>
+~~~xml
+    <fsm id="process:processing">;
+	    <precondition event="ust_master:PROCESS_START"/>;
+	    <precondition event="ust_master:PROCESS_END"/>;
+	    <initialState>;
+		    <transition event="ust_master:PROCESS_INIT" target="INITIALIZING" action="process_init:save_id"/>;
+	    </initialState>;
+	    <state id="INITIALIZING">;
+		    <transition event="ust_master:PROCESS_START" cond="test_id" target="PROCESSING" action="process_start"/>;
+	    </state>;
+	    <state id="PROCESSING">;
+		    <transition event="ust_master:PROCESS_END" cond="test_id" target="END" action="process_end"/>;
+	    </state>;
+	    <final id="END"/>;
+    </fsm>;
+~~~
 
 ---
 title: XML analysis basic
@@ -2127,13 +2178,13 @@ content_class: smaller
 The XML file opens in an editor
 <br>
 
-- We can see that there is few <code>&lt;stateChange&gt;</code> where the  <code>&lt;stateValue&gt;</code> is set to **null**.
-<pre class="prettyprint" data-lang="xml">
-&lt;stateValue type="null" /&gt;
-</pre>
+- We can see that there is few `&lt;stateChange&gt;` where the  `&lt;stateValue&gt;` is set to **null**.
+~~~xml
+<stateValue type="null" />;
+~~~
 
     <br><br>
-- We probably don't want to set the value to **null** for the <code>ust_master:PROCESS_INIT</code> and <code>ust_master:PROCESS_START</code> events.
+- We probably don't want to set the value to **null** for the `ust_master:PROCESS_INIT` and `ust_master:PROCESS_START` events.
 <br><br>
 Next slide: editing the XML file
 
@@ -2142,15 +2193,15 @@ title: Example 1
 subtitle: Edit the analysis
 content_class: smaller
 
-- Change the state value for event <code>ust_master:PROCESS_INIT</code> to <code>INITIALIZING</code>
-<pre class="prettyprint" data-lang="xml">
-    &lt;stateValue type="int" value="$INITIALIZING"/&gt;
-</pre>
+- Change the state value for event `ust_master:PROCESS_INIT` to `INITIALIZING`
+~~~xml
+    <stateValue type="int" value="$INITIALIZING"/>;
+~~~
 <br>
-- Change the state value for event <code>ust_master:PROCESS_START</code> to <code>PROCESSING</code>
-<pre class="prettyprint" data-lang="xml">
-    &lt;stateValue type="int" value="$PROCESSING"/&gt;
-</pre>
+- Change the state value for event `ust_master:PROCESS_START` to `PROCESSING`
+~~~xml
+    <stateValue type="int" value="$PROCESSING"/>;
+~~~
 <br>
 - Save the file. The opened trace should close. 
 <br>
@@ -2237,21 +2288,21 @@ content_class: smaller
 - Open the file in an editor
 - The file contains an action that creates latency data (segments) in the file
 
-<pre class="prettyprint" data-lang="xml">
+~~~xml
     &ltaction id="processing_endeded">
-        &ltsegment&gt
-          &ltsegType segName="PROCESSING" /&gt
-          &ltsegContent&gt
-            &ltsegField name="requester" type="string"&gt
-              &ltstateValue type="eventField" value="requester" /&gt
-            &lt/segField&gt
-            &ltsegField name="id" type="string"&gt
-              &ltstateValue type="eventField" value="id" /&gt
-            &lt/segField&gt
-          &lt/segContent&gt
-        &lt/segment&gt
-      &lt/action&gt
-</pre>
+        &ltsegment>
+          &ltsegType segName="PROCESSING" />
+          &ltsegContent>
+            &ltsegField name="requester" type="string">
+              &ltstateValue type="eventField" value="requester" />
+            &lt/segField>
+            &ltsegField name="id" type="string">
+              &ltstateValue type="eventField" value="id" />
+            &lt/segField>
+          &lt/segContent>
+        &lt/segment>
+      &lt/action>
+~~~
 **This action is never used**
 <br>
 - Next slide: editing the XML file
@@ -2265,9 +2316,9 @@ content_class: smaller
 <br><br>
 - Let's add an action to the `ust_master:PROCESS_END` event transition.
 <br>
-<pre class="prettyprint" data-lang="xml">
-&lt;transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" /&gt;
-</pre>
+~~~xml
+<transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" />;
+~~~
 <br><br>
 - Save the file. The opened trace should close. 
 <br><br>
