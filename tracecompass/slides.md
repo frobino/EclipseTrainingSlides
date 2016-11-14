@@ -273,7 +273,7 @@ public void traceClosed(TmfTraceClosedSignal signal) {
 ---
 title: Exercise: Listen to a signal
 
-- Reset to **TRACECOMPASS1_START**
+- Reset to **TRACECOMPASS2.1_START**
 - Create a class that will receive the signal, `EventReader`
 - Instantiate the class. For now, we will do this in the `Activator` class.
 - Register the class with the `TmfTraceSignalManager`
@@ -347,7 +347,7 @@ if (field != null) {
 ---
 title: Exercise: Read events from the trace
 
-- Reset to **TRACECOMPASS2_START**
+- Reset to **TRACECOMPASS2.2_START**
 - In the signal handler, get the trace object from the signal parameter
 - Send an even request to the trace:
 	- Create an anonymous class of type `TmfEventRequest`
@@ -1778,7 +1778,7 @@ subtitle: Overview
 
 - Viewers query analysis based on segment stores (see previous module!)
 
-TODO: PICTURE HERE?
+<center><img src="images/timingviews_getstore.png"/></center>
 
 ---
 title: Latency Table view
@@ -1814,7 +1814,7 @@ protected ISegmentStoreProvider getSegmentStoreProvider(ITmfTrace trace) {
 ---
 title: Exercise: Create a Latency Table
 
-- Reset to **TRACECOMPASS4_START**
+- Reset to **TRACECOMPASS8.1_START**
 - Create class `ProcessingLatencyTableViewer`, select super class (extends)  `AbstractSegmentStoreTableViewer`
 	- Implement method `getSegmentStoreProvider`
 - In plugin.xml, create the missing class `ProcessingLatencyTableView` (tip: click the hyperlink to bring up the New Class wizard). Select super class (extends)  `AbstractSegmentStoreTableView`.
@@ -1861,7 +1861,7 @@ subtitle: API
 ---
 title: Exercise: Create a Statistics View
 
-- Reset to **TRACECOMPASS5_START**
+- Reset to **TRACECOMPASS8.2_START**
 - Create a class `ProcessingLatencyStatisticsModule` with super class (extends) `AbstractSegmentStatisticsAnalysis`
 	- Implement `getSegmentType()`: In our example, it's the name of the segment
 	- Implement  `getSegmentProviderAnalysis`
@@ -1895,7 +1895,7 @@ subtitle: API
 ---
 title: Exercise: Create a Scatter View
 
-- Reset to **TRACECOMPASS6_START**
+- Reset to **TRACECOMPASS8.3_START**
 - Create class `ProcessingLatencyScatterGraphViewer`, select super class (extends)  `AbstractSegmentStoreScatterGraphViewer`
 	- Implement method `getSegmentStoreProvider`
 - In plugin.xml, create the missing class `ProcessingLatencyScatterView` (tip: click the hyperlink to bring up the New Class wizard). Select super class (extends)  `TmfChartView`.
@@ -1927,7 +1927,7 @@ subtitle: API
 ---
 title: Exercise: Create a Density View
 
-- Reset to **TRACECOMPASS7_START**
+- Reset to **TRACECOMPASS8.4_START**
 - Create class `ProcessingLatencyDensityViewer`, select super class (extends)  `AbstractSegmentStoreDensityViewer`
 	- Implement method `getSegmentStoreProvider`
 - In plugin.xml, create the missing class `ProcessingLatencyDensityView` (tip: click the hyperlink to bring up the New Class wizard). Select super class (extends)  `AbstractSegmentStoreDensityView`.
