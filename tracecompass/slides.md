@@ -95,6 +95,8 @@ subtitle: Common Features
 title: Trace Compass Overview
 subtitle: Common Features
 
+- TODO update pictures
+
 <center>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/tracecompass_searching.png"/></div>
 <div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Searching</span></div>
@@ -111,6 +113,7 @@ title: Trace Compass Overview
 subtitle: Common Features
 
 - Bookmarks
+- TODO update picture
 
 <center><img src="images/tracecompass_bookmarks.png"/></center>
 
@@ -398,19 +401,11 @@ subtitle:
 title: Analysis Module
 subtitle:
 
-- API for data collection
-- Can have dependent analysis and requirements on trace content
 - All analyses implement `ITmfAnalysisModule`
 - Abstract implementation `TmfAbstractAnalysisModule`
 - 0..N analyses per trace or experiment
 
----
-title: Analysis Module (2)
-subtitle:
-content_class: smaller
-
 ~~~java
-
 public class ProcessingTimeAnalysis extends TmfAbstractAnalysisModule {
 	public ProcessingTimeAnalysis() {}
 	@Override
@@ -523,7 +518,7 @@ content_class: smaller
 		- Class name: `ProcessingTimeModule`
 		- Select **Browse...** button and find superclass `TmfAbstractAnalysisModule`
 		- Remove `IAnalysisModule` interface from Interfaces list
-- Output something on console (in method`executeAnalysis()`)
+- Output something on console (in method `executeAnalysis()`)
 - continue on next slide
 
 ---
@@ -2004,29 +1999,23 @@ subtitle: Custom Analysis
 ---
 title: XML analysis basic
 subtitle:
-content_class: smaller
-
 
 - The joys of XML analysis
-<br><br>
-    - Customize Trace Compass without recompiling
-    <br><br>
-    - Add custom analysis
-    <br><br>
-    - Add custom and re-usable views
-    <br><br>
-    - Share analysis and views
-    <br><br>
-    - Find an execution flow within the trace
+	- Customize Trace Compass without recompiling
+	- Add custom analysis
+	- Add custom and re-usable views
+	- Share analysis and views
+	- Find an execution flow within the trace
 
 ---
 title: XML analysis basic
 subtitle: Advanced pattern matching
 content_class: smaller
 
-- Find stateful sequence within the trace
-<br><br>
-<img src="images/xml/general_pattern.png"/>
+- Find **stateful** sequence within the trace
+
+
+<center><img src="images/xml/general_pattern.png" width="60%" height="60%"/></center>
 
 ---
 title: XML analysis basic
@@ -2034,199 +2023,157 @@ subtitle: Advanced pattern matching
 content_class: smaller
 
 - XML description
-<br><br>
+
 ~~~xml
-    <fsm id="process:processing">;
-	    <precondition event="ust_master:PROCESS_START"/>;
-	    <precondition event="ust_master:PROCESS_END"/>;
-	    <initialState>;
-		    <transition event="ust_master:PROCESS_INIT" target="INITIALIZING" action="process_init:save_id"/>;
-	    </initialState>;
-	    <state id="INITIALIZING">;
-		    <transition event="ust_master:PROCESS_START" cond="test_id" target="PROCESSING" action="process_start"/>;
-	    </state>;
-	    <state id="PROCESSING">;
-		    <transition event="ust_master:PROCESS_END" cond="test_id" target="END" action="process_end"/>;
-	    </state>;
-	    <final id="END"/>;
-    </fsm>;
+<fsm id="process:processing">;
+	<precondition event="ust_master:PROCESS_START"/>;
+	<precondition event="ust_master:PROCESS_END"/>;
+	<initialState>;
+		<transition event="ust_master:PROCESS_INIT" 
+			target="INITIALIZING" action="process_init:save_id"/>;
+	</initialState>;
+	<state id="INITIALIZING">;
+		<transition event="ust_master:PROCESS_START" cond="test_id" 
+			target="PROCESSING" action="process_start"/>;
+	</state>;
+	<state id="PROCESSING">;
+		<transition event="ust_master:PROCESS_END" cond="test_id" 
+			target="END" action="process_end"/>;
+	</state>;
+	<final id="END"/>;
+</fsm>;
 ~~~
 
 ---
 title: XML analysis basic
 subtitle: Generic views
-content_class: smaller
 
 <center>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/xml/tracecompass_xml_timegraph.png"/></div>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>XML Timegraph View</span></div>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>XML **Time graph view**</span></div>
 <br/>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/xml/tracecompass_xml_xy_chart.png"/></div>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>XML XY View</span></div>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>XML **XY View**</span></div>
 <br/>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/xml/tracecompass_timing_analysis.png"/></div>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Timing analysis on-the-fly</span></div>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>**Timing analysis** on-the-fly</span></div>
 </center>
 
 ---
 title: How do we use an XML analysis?
 subtitle:
-content_class: smaller
 
 <center>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Define the analysis</span></div>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>**Define** the analysis</span></div>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/xml/design_xml.png"/></div>
 <br/>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Import an XML analysis</span></div>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>**Import** an XML analysis</span></div>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/xml/manage_xml_analysis.png"/></div>
 <br/>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Analyze result in Trace Compass</span></div>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>**Analyze** result in Trace Compass</span></div>
 <br/>
 </center>
 
 ---
-title: How do we define XML analysis?
+title: Exercise: Importing the XML analysis
 subtitle:
 content_class: smaller
 
-- Design structure
-
----
-title: Example 1
-subtitle:
-content_class: smaller
-
-<br><br><br><br>
-**Your first XML analysis**
-
----
-title: Example 1
-subtitle: Importing the XML analysis
-content_class: smaller
-
-- Reset to commit **blabla**
+- Reset to commit **TRACECOMPASS9.1_START**
 - In the project explorer,
     - Expand the tracing project
     - Right-click the Traces folder
     - Select `Manage XML analyses...`
     - In the opened dialog import the `training-example-full-states.xml` file and close the dialog.
-- The 'Processing Analysis' analysis is now installed
-- The analysis should be present under the trace 'master_player-14408-20161020-144931'
+- The analysis with name `Processing Analysis XML` is now installed
+- The analysis is present under the trace _training_ust_001_
 
 ---
-title: Example 1
-subtitle: Importing the XML analysis
-content_class: smaller
+title: Exercise: Importing the XML analysis
+subtitle:
 
-<img src="images/xml/ManageXMLAnalysis.png"/>
+<center><img src="images/xml/ManageXMLAnalysis.png" width="70%" height="70%"/></center>
 
 ---
-title: Example 1
-subtitle: Execute the analysis
-content_class: smaller
+title: Exercise: Execute the XML analysis
+subtitle: 
 
 - Open the trace.
-    The 'XML kernel State System' analysis should be now expandable.
+	- The `Processing Analysis XML` analysis should be now expandable.
 
-<div style="float:right;"><img src="images/xml/analysis_and_view_under_trace.png" style="width:250px;"/></div>
+<center><img src="images/xml/analysis_and_view_under_trace.png" width="30%" height="30%"/></center>
 
-<ul>
-<li> Expand the analysis. Several views are present under it:</li>
-<ul>
-    <li> 'Latency statistics' </li>
-    <li> 'Latency Table'</li>
-    <li> 'Processing States XML' </li>
-    <li> ... </li>
-</ul>
-</ul>
-<br>
-
+- Expand the analysis. Several views are present under it
 - Open the view named `Processing States XML`
 
 ---
-title: Example 1
-subtitle: Observe the analysis
-content_class: smaller
+title: Exercise: Observe the analysis 
+subtitle: 
 
 - A timegraph view opens and is `populated`
-    <br><br>
-- some `entries (rows) are empty`. Why?
 
-<img src="images/xml/empty_entry.png"/>
-<br>
-**The state system is probably not well designed**
-<br><br>
-<br><br>
+<center><img src="images/xml/empty_entry.png" width="30%" height="30%"/></center>
 
-Next slide: viewing the XML file
+- Some **entries (rows) are empty**. Why?
+- **The state system is probably not well designed**
+- Next slide: viewing the XML file
 
 ---
-title: Example 1
-subtitle: Edit the analysis
-content_class: smaller
+title: Exercise: Edit the analysis
+subtitle: 
 
 - Reopen the 'Manage XML analyses...' dialog (seen previously)
 - Select the 'training-example-full-states.xml' file and click on the 'Edit' button
 
-<img src="images/xml/edit_button.png"/>
+<center><img src="images/xml/edit_button.png" width="30%" height="30%"/></center>
+
+- The XML file opens in an editor
 
 ---
-title: Example 1
-subtitle: Edit the analysis
-content_class: smaller
+title: Exercise: Edit the analysis
+subtitle: 
 
-The XML file opens in an editor
-<br>
-
-- We can see that there is few `&lt;stateChange&gt;` where the  `&lt;stateValue&gt;` is set to **null**.
+- We can see that there is few `stateChange` where the  `stateValue` is set to **null**.
 ~~~xml
-<stateValue type="null" />;
+<stateValue type="null" />
 ~~~
 
-    <br><br>
 - We probably don't want to set the value to **null** for the `ust_master:PROCESS_INIT` and `ust_master:PROCESS_START` events.
 <br><br>
 Next slide: editing the XML file
 
 ---
-title: Example 1
-subtitle: Edit the analysis
-content_class: smaller
+title: Exercise: Edit the analysis
+subtitle: 
 
-- Change the state value for event `ust_master:PROCESS_INIT` to `INITIALIZING`
+- Change the state value for event `ust_master:PROCESS_INIT` to `$INITIALIZING`
 ~~~xml
     <stateValue type="int" value="$INITIALIZING"/>;
 ~~~
-<br>
-- Change the state value for event `ust_master:PROCESS_START` to `PROCESSING`
+
+- Change the state value for event `ust_master:PROCESS_START` to `$PROCESSING`
 ~~~xml
     <stateValue type="int" value="$PROCESSING"/>;
 ~~~
-<br>
+
 - Save the file. The opened trace should close. 
-<br>
 - Reopen the trace and the view
-<br>
 
 ---
-title: Example 1
-subtitle: Edit the analysis
-content_class: smaller
+title: Exercise: Edit the analysis
+subtitle:
 
-<img src="images/xml/filled_entries.png"/>
+<center><img src="images/xml/filled_entries.png" width="40%" height="40%"/></center>
 
 - The view is populated. There is **no empty entry**
 
 ---
-title: Example 1
-subtitle: Recap
-content_class: smaller
+title: Exercise review
+subtitle:
 
-- We've learned how to `import an XML analysis`
-<br><br>
-- We've learned how to `execute the analysis` and analyze the data
-<br><br>
-- We've learned how to `edit the analysis`
+- Importing an XML analysis
+- Executing the analysis` and analyze the data
+- Editing the analysis
 
 ---
 title: Example 2
@@ -2289,19 +2236,19 @@ content_class: smaller
 - The file contains an action that creates latency data (segments) in the file
 
 ~~~xml
-    &ltaction id="processing_endeded">
-        &ltsegment>
-          &ltsegType segName="PROCESSING" />
-          &ltsegContent>
-            &ltsegField name="requester" type="string">
-              &ltstateValue type="eventField" value="requester" />
-            &lt/segField>
-            &ltsegField name="id" type="string">
-              &ltstateValue type="eventField" value="id" />
-            &lt/segField>
-          &lt/segContent>
-        &lt/segment>
-      &lt/action>
+    <action id="processing_endeded">
+        <segment>
+          <segType segName="PROCESSING" />
+          <segContent>
+            <segField name="requester" type="string">
+              <stateValue type="eventField" value="requester" />
+            </segField>
+            <segField name="id" type="string">
+              <stateValue type="eventField" value="id" />
+            </segField>
+          </segContent>
+        </segment>
+      </action>
 ~~~
 **This action is never used**
 <br>
@@ -2317,7 +2264,7 @@ content_class: smaller
 - Let's add an action to the `ust_master:PROCESS_END` event transition.
 <br>
 ~~~xml
-<transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" />;
+<transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" />
 ~~~
 <br><br>
 - Save the file. The opened trace should close. 
