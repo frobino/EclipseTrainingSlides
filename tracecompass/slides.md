@@ -142,7 +142,7 @@ title: Trace Compass Overview
 subtitle: Control Flow View
 
 - Displays processes state changes (color-coded) over time
-	- USERMODE, SYSCALL, INTERRUPED, WAIT_FOR_CPU, etc
+	- USERMODE, SYSCALL, INTERRUPED, WAIT_FOR_CPU, etc.
 
 <center><img src="images/tracecompass_controlflowview.png"/></center>
 
@@ -192,7 +192,7 @@ subtitle: Custom Text and XML Parsers
 
 - Line based parser with regex defined in a wizard
 
-- XML based extracting data from XML elements and their attributes
+- XML-based extracting data from XML elements and their attributes
 
 </div>
 </center>
@@ -206,7 +206,7 @@ subtitle: Trace correlation (Experiments)
 - Useful for
 	- Traces coming from multiple nodes
 	- Different languages
-	- Different layers (network, etc)
+	- Different layers (network, etc.)
 - Traces can be manually synchronized by time or use an automatic algorithm (extensible)
 
 ---
@@ -223,11 +223,11 @@ subtitle: Integrations
 ---
 title: Common Trace Format (CTF)
 
-- CTF is one of the trace format understood by Trace Compass
+- CTF is one of the trace formats understood by Trace Compass
 - A **metadata** file describes the trace structure, event fields, environment, etc.
 	- CTF does not describe that structure, only the language to express it.
 - **Channel** files contain binary data, separate from the **metadata**. There is where the events are stored.
-- **LTTng** is a well known tracer that generates CTF traces for **Kernel** and **User Space (UST)** domains.
+- **LTTng** is a well-known tracer that generates CTF traces for **Kernel** and **User Space (UST)** domains.
 - Trace Compass **reads** CTF traces directly using a Java-based parser.
 - Trace Compass **does not** produce CTF traces, tracers like LTTng do.
 ---
@@ -292,11 +292,11 @@ title: Trace API
 
 `ITmfTrace`
 
-- One per trace, a the central object in Trace Compass
+- One per trace, a central object in Trace Compass
 - Knows about the key trace attributes: Number of events, file, trace type, etc.
 - Allows you to seek at a location in a trace and get events one by one
 - Does validation to determine whether or not a file is of this trace type (for
-automatic detection, etc)
+automatic detection, etc.)
 
 <center><image src="images/tracecompass_tmftrace_class.png"/></center>
 
@@ -365,7 +365,7 @@ title: Module 2 Review
 
 - **Signals** can be used to react to different things.
 - **ITmfTrace** is a central object that validates if files are of this trace type, provides trace attributes, seeks to locations and retrieves events.
-- **Event Requests** are a mean to obtain a series of event asynchronously.
+- **Event Requests** are a mean to obtain a series of events asynchronously.
 - **Events** have a name, a time stamp and content (fields). Fields can have sub-fields.
 - In the exercises:
 	- We have used **signals**
@@ -392,7 +392,7 @@ subtitle:
 - Plug-in extension point
 - Shows what can be done with trace content
 - Provides hooks to add views
-- Integrated with the in Project Explorer
+- Integrated with the Project Explorer
 - Schedules analyses in Eclipse jobs (automatically or on demand)
 - Manages dependencies between multiple analyses
 - Manages requirements to execute analyses
@@ -427,7 +427,7 @@ subtitle:
 - `IAnalysisModule#waitForCompletion()` will block thread until completion
 - Use Progress monitor in `executeAnalysis()` 
 	- to monitor progress
-	- handle user cancellation (important!)
+	- Handle user cancellation (important!)
 - An analysis can be cancelled using `IAnalysisModule#cancel()`
 - Provide help for user using `IAnalysisModule#getHelpText()`
 - `TmfAnalysisManager` keeps track on available analysis per trace type
@@ -452,7 +452,7 @@ content_class: smaller
 - **name**: The trace analysis module's name as it is displayed to the end user
 - **analysis_module**: Class that implements the `IAnalysisModule` interface.
 - **icon**: The icon associated to this analysis module.
-- **automatic**: Execute automatically when trace is opened, or on request by user
+- **automatic**: Execute automatically when trace is open, or on request by users
 - **applies_experiment**: If it applies to traces or experiments.
 
 ---
@@ -674,7 +674,7 @@ title: Dependent Analyses
 subtitle:
 
 - An analysis can depend on other analyses
-- Dependent analysis need to execute beforehand
+- Dependent analysis needs to execute beforehand
 - Dependent analysis will be scheduled automatically
 - Implement `TmfAbstractAnalysisModule#getDependentAnalyses()`
 
@@ -988,7 +988,7 @@ subtitle: TmfStateSystemAnalysisModule
 - By default, full history on disk (default can be overwritten)
 - Takes care of reading the trace using an event request
 - Handles cancellation of analysis by user
-- State system are stored in hidden directory **.tracing** in workspace
+- State systems are stored in hidden directory **.tracing** in workspace
 	- `<workspace>/<project>/.tracing/<trace>/`
 	- State system file is: `<analysis id>.ht`
 	- Delete state systems: Right-click on trace -> **Delete Supplementary Files...**
@@ -1095,7 +1095,7 @@ subtitle:
 ~~~
 
 - Example path: Requester/&lt;requester&gt;
-	- Where &lt;requester&gt; is taken from event field of CTF event
+	- Where &lt;requester&gt; is taken from an event field of a CTF event.
 - State values:
 	- 0=INITIALIZING
 	- 1=PROCESSING
@@ -1155,7 +1155,7 @@ title: Query a state system
 subtitle: ITmfStateSystem
 
 - Main interface for accessing state system `ITmfStateSystem`
-- Use after state system is build
+- Use after state system is built
 - Throws an exception if attribute doesn't exist
 - Getting a quark of an attribute from absolute path
 
@@ -1209,7 +1209,7 @@ List<Integer> getQuarks(String... pattern);
 List<Integer> getQuarks(int startingNodeQuark, String... pattern);
 ~~~
 
-- Waiting until a state system is build (with or without timeout)
+- Waiting until a state system is built (with or without timeout)
 
 ~~~java
 void waitUntilBuilt();
@@ -1241,7 +1241,7 @@ subtitle: StateSystemUtils
 content_class: smaller
 
 - Utility class to query history range
-- Getting all the states for given quark between start and end time
+- Getting all the states for a given quark between start and end time
 
 ~~~java
 public static List<ITmfStateInterval> queryHistoryRange(
@@ -1249,7 +1249,7 @@ public static List<ITmfStateInterval> queryHistoryRange(
 		throws AttributeNotFoundException, StateSystemDisposedException
 ~~~
 
-- Getting all the states for given quark between start and end time with resolution
+- Getting all the states for given a quark between start and end time with resolution
 
 ~~~java
 public static List<ITmfStateInterval> queryHistoryRange(
@@ -1308,7 +1308,7 @@ subtitle:
 	- **Navigation** with mouse, keyboard and toolbar buttons
 	- **Zooming**
 	- **Searching** (rows!)
-	- **Highlighting** of regions interests (makers or time selection)
+	- **Highlighting** of regions of interest (makers or time selection)
 - Supports drawing of **arrows**
 - **Tree** structure that supports **columns**
 
@@ -1424,7 +1424,7 @@ title: Time Graph View Overview
 subtitle: 
 
 - **Eclipse view** wrapping Time Graph Viewer 
-- Common **abstract class** with re-occurring and re-usable code
+- Common **abstract class** with reoccurring and reusable code
 	- **Handles** and sends signals (e.g. trace opened, time range selected)
 	- **Loads** the view content
 	- **Provides** default set of buttons
@@ -1701,7 +1701,7 @@ title: Timing Analysis
 subtitle: Example
 
 - High Resolution Timer – cyclictest application of rt-tests
-- Latency between timer expiry till task starts
+- Latency between timer expiry until task starts
 
 <center><img src="images/timing_latencychain.png"/></center>
 
@@ -1774,7 +1774,7 @@ subtitle: AbstractSegmentStoreAnalysisModule
 
 - Similar to normal analysis but with the notion of segments
 - **Builds** segments and **stores** them: `buildAnalysisSegments()`
-- Provides the segment store (for views, etc): `getSegmentStore()`
+- Provides the segment store (for views, etc.): `getSegmentStore()`
 
 <center><img src="images/timing_segmentanalysis.png"/></center>
 
@@ -1814,7 +1814,7 @@ subtitle: Overview
 	- Density
 
 - Most of those views follow a similar pattern:
-	- A abstract viewer to help create the widgets specific to the type of view
+	- An abstract viewer to help create the widgets specific to the type of view
 	- An abstract view class to help create the container this type of view and that will create the chosen viewer
 	- This is similar to Time Graph views VS Time Graph Viewer
 
@@ -1848,7 +1848,7 @@ subtitle: API
 
 - `AbstractSegmentStoreTableViewer`
 	- An abstract class that helps create a table viewer.
-	- `createProviderColumns`: can be overridden to have greater influence on columns (order, etc).
+	- `createProviderColumns`: can be overridden to have greater influence on columns (order, etc.).
 	- `getSegmentStoreProvider`: returns which analysis module will provide the segment store
 ~~~java
 @Override
@@ -1880,7 +1880,7 @@ title: Statistics view
 subtitle: API
 
 - `AbstractSegmentStatisticsAnalysis`
-	- An abstract class that helps create a statistics module reusing an existing segment store provider (i.e. an other module).
+	- An abstract class that helps create a statistics module reusing an existing segment store provider (i.e. another module).
 	- `getSegmentType`: returns the segment type to compute the statistics for.
 	- `getSegmentProviderAnalysis`: returns an existing segmentstore provider.
 
@@ -1920,9 +1920,9 @@ title: Exercise: Create a Statistics View
 ---
 title: Scatter chart
 
-- The Scatther view displays the segment durations over time in a 2D plot chart
-	- Each dot represent the time it ended on the X-axis and its duration on the Y-axis
-	- Makes it possible to spot **outliners**
+- The Scatter view displays the segment durations over time in a 2D plot chart
+	- Each dot represents the time it ended on the X-axis and its duration on the Y-axis
+	- Makes it possible to spot **outliers**
 
 <center><img src="images/timingviews_scatter.png"/></center>
 
@@ -1952,7 +1952,7 @@ title: Exercise: Create a Scatter View
 title: Density view
 
 - The Density view displays the segment durations on the frequency domain.
-	- Each bar represent the **duration** of the segment on the **X-axis** and the **count** of segments on the **Y-axis**
+	- Each bar represents the **duration** of the segment on the **X-axis** and the **count** of segments on the **Y-axis**
 <center><img src="images/timingviews_density.png" style="width:600px"/></center>
 <br/>
 - In other words, fast system calls are on the left and slow system calls are on the right
@@ -2003,7 +2003,7 @@ subtitle:
 - The joys of XML analysis
 	- Customize Trace Compass without recompiling
 	- Add custom analysis
-	- Add custom and re-usable views
+	- Add custom and reusable views
 	- Share analysis and views
 	- Find an execution flow within the trace
 
@@ -2085,7 +2085,7 @@ content_class: smaller
     - Right-click the Traces folder
     - Select `Manage XML analyses...`
     - In the opened dialog import the `training-example-full-states.xml` file and close the dialog.
-- The analysis with name `Processing Analysis XML` is now installed
+- The analysis with the name `Processing Analysis XML` is now installed
 - The analysis is present under the trace _training_ust_001_
 
 ---
@@ -2103,7 +2103,7 @@ subtitle:
 
 <center><img src="images/xml/analysis_and_view_under_trace.png" width="30%" height="30%"/></center>
 
-- Expand the analysis. Several views are present under it
+- Expand the analysis. Several views are present under it.
 - Open the view named `Processing States XML`
 
 ---
@@ -2156,7 +2156,7 @@ subtitle:
     <stateValue type="int" value="$PROCESSING"/>;
 ~~~
 
-- Save the file. The opened trace should close. 
+- Save the file. The open trace should close. 
 - Reopen the trace and the view
 
 ---
@@ -2165,7 +2165,7 @@ subtitle:
 
 <center><img src="images/xml/filled_entries.png" width="40%" height="40%"/></center>
 
-- The view is populated. There is **no empty entry**
+- The view is populated. There is **no empty entry**.
 
 ---
 title: Exercise review
