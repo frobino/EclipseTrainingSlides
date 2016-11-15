@@ -95,25 +95,26 @@ subtitle: Common Features
 title: Trace Compass Overview
 subtitle: Common Features
 
-- TODO update pictures
-
 <center>
+<p>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/tracecompass_searching.png"/></div>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Searching</span></div>
-<br/>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>**Searching**</span></div>
+</p>
+<p>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/tracecompass_filtering.png"/></div>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Filtering</span></div>
-<br/>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>**Filtering**</span></div>
+</p>
+<p>
 <div style="display:table-cell; width:50%;"><img style="width:300px; height:auto" src="images/tracecompass_highlighting.png"/></div>
-<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>Highlighting</span></div>
+<div style="display:table-cell; width:50%; text-align: center; vertical-align: middle"><span>**Highlighting**</span></div>
+</p>
 </center>
 
 ---
 title: Trace Compass Overview
 subtitle: Common Features
 
-- Bookmarks
-- TODO update picture
+- Bookmarks and markers
 
 <center><img src="images/tracecompass_bookmarks.png"/></center>
 
@@ -249,7 +250,21 @@ subtitle: References
 ---
 title: The example
 
-TODO: Explain the example application and trace here?
+- 2 processes exchanging messages (over sockets)
+	- **master** process
+	- **challenger** process
+- **challenger** sends requests to **master** which replies
+- Upon reception of a request **master** executes a **processing task**
+- The processing task spawns multiple workers (simulated)
+- Each worker performs some calculation that vary in **duration**
+- Each calculation has processing states
+- We trace **master**
+
+---
+title: The example
+subtitle: 
+
+<center><image src="images/tracecompass_example-explained.png"/></center>
 
 ---
 title: Module 2
@@ -607,34 +622,15 @@ public Iterable<TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
 ~~~
 
 ---
-title: Exercise: Add Analysis Requirements
-subtitle: 
-content_class: smaller
+title: Analysis Requirements
+subtitle: Project Explorer
 
-- Reset to **TRACECOMPASS3.2_START**
-- Open class `ProcessingTimeAnalysis` 
-- Override method `getAnalysisRequirements()`
-- Create an `TmfAnalysisEventRequirement` for event names
-	- Mandatory event names: ust_master:CREATE, ust_master:START, ust_master:STOP, ust_master:END, ust_master:PROCESS_INIT, ust_master:PROCESS_START, ust_master:PROCESS_END
-- Return an `Iterable` over the analysis requirements
-- Run Trace Compass and explore the Project Explorer
-	- What would happens if one event name is missing?
-	- Explore the help (context-sensitive menu) in that case 
-- **Go!**
+- If requirements are not fulfilled the analysis is strike-through
+- Help text is available through context-sensitive menu
+
+<center><img src="images/ProjectExplorer-no-requirements.png " width="75%" height="75%"/></center>
 
 ---
-title: Exercise: Review
-subtitle: 
-
-- Implementing analysis requirement for event names
-- Providing the analysis requirement from the analysis 
-- Exploring the analysis in Project Explorer
-	- Analysis shown if all requirements are fulfilled
-	- Otherwise analysis is struck-through
-- Showing the analysis help
-
----
-
 title: Analysis Parameter Provider
 subtitle:
 
@@ -1119,7 +1115,7 @@ subtitle:
 
 - Reset to **TRACECOMPASS4.2_START**
 - Update `ProcessingTimeStateProvider` (see state machine on next slide)
-	- Hint: Use attribute tree layout shown in file 
+	- See next slides for state machine and attribute tree
 - Run Trace Compass and open trace
 - Open State System Explorer
 	- Explore state system org.eclipse.tracecompass.training.example.ht 
@@ -1305,7 +1301,7 @@ subtitle: Time Graph Views
 title: Time Graph Viewer Overview
 subtitle: 
 
-<center><img src="images/TimeGraphView-explained.png" width="90%" height="90%"/></center>
+<center><img src="images/TimeGraphView-explained.png" width="100%" height="100%"/></center>
 
 ---
 title: Time Graph Viewer Overview
