@@ -288,6 +288,17 @@ title: Exercise: Listen to a signal
 - **TODO**: Show how to test by opening a trace
 
 ---
+title: How to test
+
+- Start the "runtime" Eclipse
+
+<center><image src="images/tracecompass_runtime-launch.png"/></center>
+
+- Open the trace in Project Explorer
+
+<center><image src="images/tracecompass_trace_open.png"/></center>
+
+---
 title: Trace API
 
 `ITmfTrace`
