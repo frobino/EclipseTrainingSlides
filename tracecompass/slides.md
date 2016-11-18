@@ -2147,7 +2147,7 @@ subtitle:
 
 - We probably don't want to set the value to **null** for the `ust_master:PROCESS_INIT` and `ust_master:PROCESS_START` events.
 <br><br>
-Next slide: editing the XML file
+- Next slide: editing the XML file
 
 ---
 title: Exercise: Edit the analysis
@@ -2178,70 +2178,50 @@ subtitle:
 title: Exercise review
 subtitle:
 
-- Importing an XML analysis
-- Executing the analysis` and analyze the data
-- Editing the analysis
+- In the exercise, we have
+	- Imported an XML analysis
+	- Edited the XML analysis
+	- Executed the XML analysis and analyzed the data
 
 ---
-title: Example 2
+title: Exercise: Timing Analysis
 subtitle:
-content_class: smaller
 
-**Timing analysis**
-
----
-title: Example 2
-subtitle:
-content_class: smaller
-
-- Reset to commit **blabla**
-<br><br>
+- Reset to commit **TRACECOMPASS8.2_START**
 - Import the 'training-example-processing-timing.xml' file
 
-<img src="images/xml/manager_timing_analysis.png"/>
+<center><img src="images/xml/manager_timing_analysis.png" width="40%" height="40%"/></center>
 
-- The 'Processing Latency XML' analysis should be present under the trace
-<br><br>
+- The analysis with the name `Processing Latency XML` is now installed
+- The analysis is present under the trace _training_ust_001_
 
 ---
-title: Example 2
+title: Timing Analysis
 subtitle:
-content_class: smaller
 
 - Reopen The trace
     - Several views are now present under the analysis.
     
-<img src="images/xml/latency_view_label.png"/>
+<left><img src="images/xml/latency_view_label.png" width="30%" height="30%"/></left>
 
-<br/>
-
-- Open the latency views:
-    - Latency Statistics view
-    - Latency Table view
-    - Latency vs Count
-    - Latency vs Time
+- Open all 4 latency views
 
 ---
-title: Example 2
-subtitle: Observe the analysis
-content_class: smaller
+title: Exercise: Observe the analysis
+subtitle:
 
 - All the views are empty
+	- **The analysis probably does not create any latency data**
 <br><br>
-**The analysis probably does not create any latency data**
-<br><br>
-<br><br>
-
-Next slide: viewing the XML file
+- Next slide: viewing the XML file
 
 ---
-title: Example 2
-subtitle: Edit the analysis
-content_class: smaller
+title: Execercise:Edit the analysis
+subtitle:
+content_class: smaller 
 
 - Open the file in an editor
 - The file contains an action that creates latency data (segments) in the file
-
 ~~~xml
     <action id="processing_endeded">
         <segment>
@@ -2257,58 +2237,48 @@ content_class: smaller
         </segment>
       </action>
 ~~~
-**This action is never used**
+- **This action is never used**
 <br>
 - Next slide: editing the XML file
 
 ---
-title: Example 2
-subtitle: Edit the analysis
-content_class: smaller
+title: Exercise: Edit the analysis
+subtitle:
 
-- We need to call the action when the processing ended (when we receive the `ust_master:PROCESS_END`event).
-<br><br>
+- We need to call the action when the processing ended (when we receive the `ust_master:PROCESS_END` event).
 - Let's add an action to the `ust_master:PROCESS_END` event transition.
-<br>
+
 ~~~xml
 <transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" />
 ~~~
-<br><br>
+
 - Save the file. The opened trace should close. 
-<br><br>
 - Reopen the trace and the latency views
-<br><br>
 - The views are now **populated**.
-<br><br>
 - The same latency views and content as the JAVA one
 
 ---
-title: Example 2
-subtitle: Analysis result
+title: Exercise: Analysis result
+subtitle:
 content_class: smaller
 
-<img src="images/xml/latency_views_populated.png"/>
+<center><img src="images/xml/latency_views_populated.png" width="70%" height="70%"/></center>
 
 ---
-title: Example 2
-subtitle: Recap
-content_class: smaller
+title: Exercise Review
+subtitle: 
 
-- We've learned how to `generate latencies data` from the XML analysis
-<br><br>
-- We've learned how to `analyze latencies` based on XML analysis
+- In the exercise, we have
+	- Generated latency data using XML analysis
+	- Analyzed latencies based on XML analysis
+	- Visualized of latency data in various latency views 
 
 ---
-title: Training recap
-subtitle: what we've seen
-content_class: smaller
+title: Module 8 review
+subtitle: What we've seen
 
 - We've learned how to `import an XML analysis`
-<br><br>
 - We've learned how to `execute the analysis` and analyze the data
-<br><br>
 - We've learned how to `edit the analysis
-<br><br>
 - We've learned how to `generate latencies data` from the XML analysis
-<br><br>
 - We've learned how to `analyze latencies` based on XML analysis
