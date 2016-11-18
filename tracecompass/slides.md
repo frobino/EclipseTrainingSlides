@@ -2033,23 +2033,23 @@ content_class: smaller
 - XML description
 
 ~~~xml
-<fsm id="process:processing">;
-	<precondition event="ust_master:PROCESS_START"/>;
-	<precondition event="ust_master:PROCESS_END"/>;
-	<initialState>;
+<fsm id="process:processing">
+	<precondition event="ust_master:PROCESS_START"/>
+	<precondition event="ust_master:PROCESS_END"/>
+	<initialState>
 		<transition event="ust_master:PROCESS_INIT" 
-			target="INITIALIZING" action="process_init:save_id"/>;
-	</initialState>;
-	<state id="INITIALIZING">;
+			target="INITIALIZING" action="process_init:save_id"/>
+	</initialState>
+	<state id="INITIALIZING">
 		<transition event="ust_master:PROCESS_START" cond="test_id" 
-			target="PROCESSING" action="process_start"/>;
-	</state>;
-	<state id="PROCESSING">;
+			target="PROCESSING" action="process_start"/>
+	</state>
+	<state id="PROCESSING">
 		<transition event="ust_master:PROCESS_END" cond="test_id" 
-			target="END" action="process_end"/>;
-	</state>;
-	<final id="END"/>;
-</fsm>;
+			target="END" action="process_end"/>
+	</state>
+	<final id="END"/>
+</fsm>
 ~~~
 
 ---
@@ -2124,14 +2124,14 @@ subtitle:
 
 - Some **entries (rows) are empty**. Why?
 - **The state system is probably not well designed**
-- Next slide: viewing the XML file
+- Let's take a look at the XML file
 
 ---
 title: Exercise: Edit the analysis
 subtitle: 
 
-- Reopen the 'Manage XML analyses...' dialog (seen previously)
-- Select the 'training-example-full-states.xml' file and click on the 'Edit' button
+- Reopen the **Manage XML analyses...** dialog (seen previously)
+- Select **training-example-full-states** and click on the 'Edit' button
 
 <center><img src="images/xml/edit_button.png" width="30%" height="30%"/></center>
 
@@ -2141,27 +2141,27 @@ subtitle:
 title: Exercise: Edit the analysis
 subtitle: 
 
-- We can see that there is few `stateChange` where the  `stateValue` is set to **null**.
+- We can see that there are some `stateChange` where the  `stateValue` is set to **null**.
 ~~~xml
 <stateValue type="null" />
 ~~~
 
 - We probably don't want to set the value to **null** for the `ust_master:PROCESS_INIT` and `ust_master:PROCESS_START` events.
 <br><br>
-- Next slide: editing the XML file
+- Let's edit the XML file
 
 ---
 title: Exercise: Edit the analysis
 subtitle: 
 
-- Change the state value for event `ust_master:PROCESS_INIT` to `$INITIALIZING`
+- Change the **stateValue** for event `ust_master:PROCESS_INIT` to `$INITIALIZING`
 ~~~xml
-    <stateValue type="int" value="$INITIALIZING"/>;
+    <stateValue type="int" value="$INITIALIZING"/>
 ~~~
 
-- Change the state value for event `ust_master:PROCESS_START` to `$PROCESSING`
+- Change the **stateValue** for event `ust_master:PROCESS_START` to `$PROCESSING`
 ~~~xml
-    <stateValue type="int" value="$PROCESSING"/>;
+    <stateValue type="int" value="$PROCESSING"/>
 ~~~
 
 - Save the file. The open trace should close. 
@@ -2189,7 +2189,7 @@ title: Exercise: Timing Analysis
 subtitle:
 
 - Reset to commit **TRACECOMPASS8.2_START**
-- Import the 'training-example-processing-timing.xml' file
+- Import the **training-example-processing-timing.xml** file
 
 <center><img src="images/xml/manager_timing_analysis.png" width="40%" height="40%"/></center>
 
@@ -2214,14 +2214,13 @@ subtitle:
 - All the views are empty
 	- **The analysis probably does not create any latency data**
 <br><br>
-- Next slide: viewing the XML file
+- Let's take a look at the XML file
 
 ---
-title: Execercise:Edit the analysis
-subtitle:
+title: Exercise: Edit the analysis
 content_class: smaller 
 
-- Open the file in an editor
+- Open the XML file (using Edit)
 - The file contains an action that creates latency data (segments) in the file
 ~~~xml
     <action id="processing_endeded">
@@ -2240,7 +2239,7 @@ content_class: smaller
 ~~~
 - **This action is never used**
 <br>
-- Next slide: editing the XML file
+- Let's edit the XML file
 
 ---
 title: Exercise: Edit the analysis
@@ -2253,10 +2252,10 @@ subtitle:
 <transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" />
 ~~~
 
-- Save the file. The opened trace should close. 
+- Save the file. The open trace should close. 
 - Reopen the trace and the latency views
 - The views are now **populated**.
-- The same latency views and content as the JAVA one
+- The latency views and content are the same as the Java analysis
 
 ---
 title: Exercise: Analysis result
@@ -2269,17 +2268,18 @@ content_class: smaller
 title: Exercise Review
 subtitle: 
 
-- In the exercise, we have
+- In the exercise, we have:
 	- Generated latency data using XML analysis
 	- Analyzed latencies based on XML analysis
-	- Visualized of latency data in various latency views 
+	- Visualized latency data in various latency views 
 
 ---
 title: Module 8 review
-subtitle: What we've seen
+subtitle: What we have seen
 
-- We've learned how to `import an XML analysis`
-- We've learned how to `execute the analysis` and analyze the data
-- We've learned how to `edit the analysis
-- We've learned how to `generate latencies data` from the XML analysis
-- We've learned how to `analyze latencies` based on XML analysis
+- In this module, we have:
+	- Learned how to `import an XML analysis`
+	- Learned how to `execute the analysis` and analyze the data
+	- Learned how to `edit the analysis`
+	- Learned how to `generate latencies data` from the XML analysis
+	- Learned how to `analyze latencies` based on XML analysis
