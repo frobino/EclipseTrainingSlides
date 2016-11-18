@@ -558,8 +558,8 @@ content_class: smaller
 - **Go!**	
 
 ---
-title: Exercise: Review
-subtitle: 
+title: Exercise Review
+subtitle: What we accomplished
 
 - Defining an analysis extension
 - Applying analysis to a trace type
@@ -774,8 +774,8 @@ content_class: smaller
 - **Go!**	
 
 ---
-title: Exercise: Review
-subtitle: 
+title: Exercise Review
+subtitle: What we accomplished
 
 - Implementing analysis output
 - Opening the output from the Project Explorer
@@ -1148,8 +1148,8 @@ subtitle:
 
 
 ---
-title: Exercise: Review
-subtitle: 
+title: Exercise Review
+subtitle: What we accomplished
 
 - Overview of Generic State System APIs (for building)
 - Creating a state system analysis module
@@ -1277,10 +1277,10 @@ subtitle:
 - **Go!**	
 
 ---
-title: Exercise: Review
-subtitle: 
+title: Exercise Review
+subtitle: What we accomplished
 
-- State values and state intervals
+- Understanding of state values and state intervals
 - Getting attribute quarks
 - Performing  single queries
 - Performing full queries
@@ -1418,8 +1418,8 @@ subtitle:
 - **Go!**
 
 ---
-title: Exercise: Review
-subtitle: 
+title: Exercise Review
+subtitle: What we accomplished
 
 - Creating a Time Graph Viewer
 - Setting a presentation provider
@@ -1588,12 +1588,13 @@ subtitle:
 - **Go!**
 
 ---
-title: Exercise: Review
-subtitle: 
+title: Exercise Review
+subtitle: What we accomplished 
 
-- Extending an AbstractTimeGraphView
-- Implementing buildEntryList() -&gt; used in build thread
-- Implementing getEventList() -&gt; used in zoom thread
+- Extending the AbstractTimeGraphView
+- Understanding concept of build and zoom thread
+	- Implementing buildEntryList() -&gt; used in build thread
+	- Implementing getEventList() -&gt; used in zoom thread
 - Exploring of the Time Graph View
 
 ---
