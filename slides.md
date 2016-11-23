@@ -20,13 +20,12 @@ content_class:
     - Module 4: DSF events and exercises
 
 ---
-title: Agenda (cont)
+title: Other content available but not covered
 build_lists: false
 
-- Day 3: Getting to know DSF-GDB
+- Getting to know DSF-GDB
     - Module 5: DSF-GDB concepts and exercises
-    - User meeeting
-- Day 4: Modifying DSF-GDB's behaviour
+- Modifying DSF-GDB's behaviour
     - Module 6: Changing the Debug View
     - Module 7: Changing GDB's initialization
     <br><br>
@@ -39,7 +38,7 @@ title: Approach to course
 - A mix of theory and hands-on exercises
 - Teams of 2
 - Ask questions often and give feeback
-- 9h to 16h schedule
+- 9h30 to 16h30 schedule
 - One hour lunch
 - 15 minute break, morning and afternoon
 - Please tell us if you are confused during the course
@@ -326,8 +325,6 @@ title: Step to prepare
 
 - Since we want to use the Git repo, delete the project and import existing one.
     - Right-click on your project and press Delete then press OK
-- Go to *Git perspective*
-    - In *Git Repositories* right-click and choose *Remove Repository from View*
 
 ---
 title: Step to prepare (2)
@@ -1216,13 +1213,15 @@ title: Multiple Session Exercise
 ---
 title: Sessions Exercise Review
 
----
 
+---
+title: Final Recap
+
+- We've created a new view that used existing services
 <br><br>
+- We've created a new service that the new view can use
 <br><br>
-<br><br>
-<br><br>
-##<center>Getting to know DSF-GDB</center>
+- We've created a replacement service for our own delegate
 
 ---
 title: Module 5

@@ -287,6 +287,18 @@ public void traceClosed(TmfTraceClosedSignal signal) {
     ...
 }
 ~~~
+---
+title: Step to prepare
+
+- Go to *Plug-in Development perspective*:
+    - *File->Import...->General->Existing Projects into Workspace*
+    - Press *Next*
+    - Press *Browse...*
+    - Choose *~/workspace-training/EclipseTraining/org.eclipse.tracecompass.training.example*
+    - Make sure a single project is showing and is selected
+    - Press *Finish*
+
+- Right-click on project and choose *Team->Fetch from Upstream*
 
 ---
 title: Exercise: Listen to a signal
