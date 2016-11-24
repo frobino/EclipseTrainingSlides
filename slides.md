@@ -46,7 +46,9 @@ title: Approach to course
 ---
 title: Start your Eclipse
 
-- Select workspace: *~/workspace-training*
+- Execute the start script *~/workspace-training/start.tcsh*
+
+- All good?
 
 ---
 
@@ -63,8 +65,6 @@ subtitle: Eclipse Platform and Plug-in Development
 - Intro to Eclipse Platform
 <br><br>
 - Plug-in development
-<br><br>
-- Exercises
 
 ---
 title: The Eclipse Platform
@@ -257,7 +257,7 @@ Common uses:
 ---
 title: The Eclipse SDK
 
-To be able to work program with the Eclipse Platform, you need tools.
+To be able to work with the Eclipse Platform, you need tools.
 
 <img src="images/eclipse-logo-without-text.png" width="64" height="64"/>=<img src="images/jdt.png"  width="64" height="64"/>+<img src="images/plugins.png"  width="64" height="64"/><br/>
 
@@ -284,7 +284,7 @@ subtitle: Implementing a First Plug-in
 ---
 title: Project for exercices
 
-We will create a new view that will display a log of every function:line that the debugger stops at.
+We will create a new view that will display a log. Every time the debugger stops, print function:linenumber.
 <center>
 <img src=images/FrameSpy.png>
 </center>
@@ -555,18 +555,18 @@ job.schedule();
 title: Exercise: Creating a polling job
 
 - Reset to **PLUG8**
-- When toggle state is on, create and schedule a job
+- When toggle state is on, create and schedule a job. Store it in a field (fJob).
 	- Give the job a nice name to be shown in the Progress View
 - In the job run() method, sleep for 1 sec. Use Thread.sleep
 - After the 1 sec, reschedule the job (only if the toggle state is still on!). Use schedule()
 - Print something to the console every tick "polling..."
-- If the toggle state becomes 'off' cancel the job. Use job.cancel().
+- If the toggle state becomes 'off' cancel the job. Use fJob.cancel().
 - <b>Go!</b>
 
 ---
 title: Exercise: Print to view
 
-Every tick, we would like to show the elapsed time in the view. It can just be a 
+Every tick, we would like to show the elapsed time in the view. It can just be a label
 
 - Reset to **PLUG9**
 - Create a counter (a simple int) that is incremented each tick.
