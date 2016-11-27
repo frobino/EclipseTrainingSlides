@@ -449,6 +449,7 @@ public class ProcessingTimeAnalysis extends TmfAbstractAnalysisModule {
 	@Override
 	protected boolean executeAnalysis(IProgressMonitor monitor) 
 		throws TmfAnalysisException {
+		// TODO implement logic
 		return true;
 	}
 	@Override
@@ -458,13 +459,13 @@ public class ProcessingTimeAnalysis extends TmfAbstractAnalysisModule {
 ~~~
 
 ---
-title: Analysis Module (3)
+title: Analysis Module (2)
 subtitle: 
 
 - Analysis is scheduled `IAnalysisModule#schedule()`
 - `IAnalysisModule#waitForCompletion()` will block thread until completion
 - Use Progress monitor in `executeAnalysis()` 
-	- to monitor progress
+	- To monitor progress
 	- Handle user cancellation (important!)
 - An analysis can be cancelled using `IAnalysisModule#cancel()`
 - Provide help for user using `IAnalysisModule#getHelpText()`
@@ -520,7 +521,7 @@ subtitle:
 - Define the trace type the analysis applies (or not)
 
 ~~~dtd
-		<!ELEMENT tracetype EMPTY&>
+		<!ELEMENT tracetype EMPTY>
 		<!ATTLIST tracetype
 		class   CDATA #REQUIRED
 		applies (true | false) >
@@ -943,7 +944,7 @@ ITmfStateValue getStateValue();
 - Validates whether it intersects with a given timestamp
 
 ~~~
-	boolean intersects(long timestamp);
+boolean intersects(long timestamp);
 ~~~
 
 ---
@@ -954,7 +955,7 @@ subtitle: ITmfStateSystemBuilder
 - Main interface used during state system building: `ITmfStateSystemBuilder`
 - Getting/adding an attribute quark using an absolute path 
 ~~~java
-int getQuarkAbsoluteAndAdd(String... attribute);
+int getQuarkAbsoluteAndAdd(String... path);
 ~~~
 - Getting/adding an attribute quark using a relative path
 ~~~java
@@ -1017,14 +1018,14 @@ title: State System Analysis Module (2)
 subtitle: TmfStateSystemAnalysisModule
 content_class: smaller
 
-- Access state system using utility method
+- Access state system using static utility method
 ~~~java
 
-public static ITmfStateSystem getStateSystem(ITmfTrace trace, String moduleId);
-}
+ITmfStateSystem myStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, "my.analysis.id");
 ~~~
 - Create state provider class 
 ~~~java
+@Override
 protected ITmfStateProvider createStateProvider() {
 	ITmfTrace trace = getTrace();
 	if (trace == null) {
@@ -1033,7 +1034,6 @@ protected ITmfStateProvider createStateProvider() {
 	return new ProcessingTimeStateProvider(trace);
 }
 ~~~
-
 ---
 title: State provider
 subtitle: 
@@ -1060,7 +1060,7 @@ protected void eventHandle(ITmfEvent event) {
 		String requester = 
 			event.getContent().getFieldValue(String.class, "requester");
 
-		// get quark of attribute for path Requester/<requester&gt;
+		// get quark of attribute for path Requester/<requester>
 		int quark = stateSystem.getQuarkAbsoluteAndAdd("Requester", requester);
 
 		// Create new state value
@@ -1198,16 +1198,14 @@ subtitle: ITmfStateSystem
 - Getting a quark of an optional attribute from absolute path
 
 ~~~java
-int optQuarkAbsolute(String... attribute)
-	throws AttributeNotFoundException;
+int optQuarkAbsolute(String... attribute);
 ~~~
 
 - Getting a quark of an optional attribute from relative path
 
 ~~~java
 
-int optQuarkRelative(int startingNodeQuark, String... subPath)
-	throws AttributeNotFoundException;
+int optQuarkRelative(int startingNodeQuark, String... subPath);
 ~~~
 - Return `#INVALID_ATTRIBUTE` (-2) if it doesn't exist
 
@@ -1475,34 +1473,6 @@ subtitle:
 <center><img src="images/AbstractTimeGraphView.png" width="80%" height="80%"/></center>
 
 ---
-title: Create a Time Graph View
-subtitle:
-content_class: smaller
-
-~~~java
-public class ProcessingStatesView extends AbstractTimeGraphView {
-
-// Constructor
-public ProcessingStatesView() {
-	super("my.view.id", new ProcessingStatesPresentationProvider());
-	// Enable entry filtering
-	setFilterColumns(FILTER_COLUMNS);
-	setFilterLabelProvider(new FilterLabelProvider());
-}
-@Override
-protected void buildEntryList(
-	ITmfTrace trace, ITmfTrace parentTrace, IProgressMonitor monitor) {
-	// TODO
-}
-@Override
-protected List<ITimeEvent> getEventList(
-	TimeGraphEntry entry, long startTime, long endTime,	long resolution, 
-	IProgressMonitor monitor) {
-	// TODO
-}
-~~~
-w
----
 title: Time Graph View API
 subtitle: AbstractTimeGraphView
 
@@ -1530,6 +1500,34 @@ subtitle: AbstractTimeGraphView
 protected abstract List<ITimeEvent> getEventList(
 	TimeGraphEntry entry, long startTime, long endTime, 
 	long resolution, IProgressMonitor monitor);
+~~~
+
+---
+title: Create a Time Graph View
+subtitle:
+content_class: smaller
+
+~~~java
+public class ProcessingStatesView extends AbstractTimeGraphView {
+
+	// Constructor
+	public ProcessingStatesView() {
+		super("my.view.id", new ProcessingStatesPresentationProvider());
+		// Enable entry filtering
+		setFilterColumns(FILTER_COLUMNS);
+		setFilterLabelProvider(new FilterLabelProvider());
+	}
+	@Override
+	protected void buildEntryList(
+		ITmfTrace trace, ITmfTrace parentTrace, IProgressMonitor monitor) {
+		// TODO
+	}
+	@Override
+	protected List<ITimeEvent> getEventList(
+		TimeGraphEntry entry, long startTime, long endTime,	long resolution, 
+		IProgressMonitor monitor) {
+		// TODO
+	}
 ~~~
 
 ---
