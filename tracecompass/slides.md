@@ -6,6 +6,32 @@
 % thankyou_details:
 
 ---
+title: Agenda
+
+- Day 1
+    - Module 1: Overview and Background
+    - Module 2: Core Trace API
+	- Module 3: Analysis Framework
+	- Module 4: Generic State System
+- Day 2
+    - Module 5: Time Graph Views
+    - Module 6: Timing Analysis
+	- Module 7: Timing Analysis Views
+	- Module 8: Custom Analysis
+---
+title: Approach to course
+
+- A mix of theory and hands-on exercises
+- Teams of 2
+- Ask questions often and give feeback
+- 9h30 to 16h30 schedule
+- One hour lunch
+- 15 minute break, morning and afternoon
+- Please tell us if you are confused during the course
+
+<center>**Let's get started!**</center>
+
+---
 title: Module 1
 subtitle: Overview and Background
 
@@ -288,31 +314,35 @@ public void traceClosed(TmfTraceClosedSignal signal) {
 }
 ~~~
 ---
-title: Step to prepare
+title: Steps to prepare
 
-- Go to *Plug-in Development perspective*:
-    - *File->Import...->General->Existing Projects into Workspace*
-    - Press *Next*
-    - Press *Browse...*
-    - Choose *~/workspace-training/EclipseTraining/org.eclipse.tracecompass.training.example*
-    - Make sure a single project is showing and is selected
-    - Press *Finish*
-
-- Right-click on project and choose *Team->Fetch from Upstream*
-
+- In the command-line, cd to **~/workspace-traning/EclipseTraning**. 
+	- Execute **git reset --hard 1af2ce**
+- Execute the start script *~/workspace-training/start.tcsh*
+- If you have any projects that are *not* named **External Plug-in Libraries**, remove them:
+	- Right-click on the project, Delete (Do not check "Delete project contents on disk").
+- You should only have *External Plug-in Libraries*
+- All good?
 ---
-title: Exercise: Listen to a signal
+title: Steps to prepare
 
-- Reset to **TRACECOMPASS2.1_START**
-- Create a class that will receive the signal, `EventReader`
-- Instantiate the class. For now, we will do this in the `Activator` class.
-- Register the class with the `TmfTraceSignalManager`
-- Create a `public` method that will receive the signal:
-	- Annotate your method with `@TmfSignalHandler`
-	- It needs a `TmfTraceOpenedSignal` parameter
-	- Make it output something to the console
-- <b>Go!</b>
-- **TODO**: Show how to test by opening a trace
+- Go to *Plug-in Development perspective**:
+    - **File->Import...->General->Existing Projects into Workspace**
+    - Press **Next**
+    - Press **Browse...**
+    - Choose **~/workspace-training/EclipseTraining/org.eclipse.tracecompass.training.example**
+    - Make sure a single project is showing and is selected
+    - Press **Finish**
+
+- Right-click on project and choose **Team->Fetch from Upstream**
+---
+title: How to reset to commits
+
+- Open the History view (tab at the bottom of the screen)
+- If nothing appears, click on the **org.eclipse.tracecompass.training.example**
+- Right-click on the desired commit (**TRACECOMPASS2.1_START**), **Reset**, **Hard**
+
+<center><img src="images/git_reset.png"/></center>
 
 ---
 title: How to test
@@ -321,9 +351,23 @@ title: How to test
 
 <center><image src="images/tracecompass_runtime-launch.png"/></center>
 
-- Open the trace in Project Explorer
+- Right-click on **training_ust_001**, Select Trace Type > Common Trace Format > LTtng UST Trace.
+- Open the trace in Project Explorer (double-click)
 
-<center><image src="images/tracecompass_trace_open.png"/></center>
+<center><image style="width:250px; height:auto" src="images/tracecompass_trace_open.png"/></center>
+
+---
+title: Exercise: Listen to a signal
+
+- Reset to **TRACECOMPASS2.1_START** (should already have been done in previous steps)
+- Create a class that will receive the signal, `EventReader`
+- Instantiate the class. For now, we will do this in the `Activator` class.
+- Register the class with the `TmfTraceSignalManager`
+- Create a `public` method that will receive the signal:
+	- Annotate your method with `@TmfSignalHandler`
+	- It needs a `TmfTraceOpenedSignal` parameter
+	- Make it output something to the console (System.out.println)
+- <b>Go!</b>
 
 ---
 title: Trace API
@@ -391,11 +435,11 @@ title: Exercise: Read events from the trace
 
 - Reset to **TRACECOMPASS2.2_START**
 - In the signal handler, get the trace object from the signal parameter
-- Send an even request to the trace:
+- Send an event request to the trace:
 	- Create an anonymous class of type `TmfEventRequest`
 	- Override handleData and output the time stamp of each event to console
 		- **Bonus**: Print a specific field of the event
-	- When the request is **completed**, output something to the console
+	- When the request is **completed**, output something to the console (System.out.println)
 - <b>Go!</b>
 
 ---
