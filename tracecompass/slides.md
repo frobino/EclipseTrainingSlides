@@ -629,7 +629,6 @@ subtitle: What we accomplished
 title: Analysis Requirements
 subtitle: 
 
-- 
 - Provide information to user if analysis can't run
 - Requirements on event types or specific event field
 - Implement interface `IAnalysisRequirementProvider`
@@ -677,7 +676,6 @@ public Iterable<TmfAbstractAnalysisRequirement> getAnalysisRequirements() {
 	return requirements;
 }
 ~~~
-
 ---
 title: Analysis Requirements
 subtitle: Project Explorer
@@ -733,7 +731,6 @@ public class MyAnalysisParamProvider extends TmfAbstractAnalysisParamProvider {
 ~~~
 
 ---
-
 title: Dependent Analyses
 subtitle:
 
@@ -743,7 +740,6 @@ subtitle:
 - Implement `TmfAbstractAnalysisModule#getDependentAnalyses()`
 
 ---
-
 title: Dependent Analyses (2)
 subtitle:
 content_class: smaller
@@ -763,7 +759,6 @@ protected Iterable<IAnalysisModule> getDependentAnalyses() {
 ~~~
 
 ---
-
 title: Analysis Output
 subtitle: 
 
@@ -839,7 +834,6 @@ subtitle: What we accomplished
 - Exploring the analysis in Project Explorer
 
 ---
-
 title: Module 4
 subtitle: Generic State System
 
@@ -848,7 +842,6 @@ subtitle: Generic State System
 - State System Analysis Module
 
 ---
-
 title: Generic State System Overview
 subtitle: 
 
@@ -1087,7 +1080,7 @@ subtitle:
 	- Uses a buffering scheme to not block event request
 - Implement `ITmfStateProvider#getVersion()`
 	- To force recreation of state system change return value
-- Implement `ITmfStateProvider#getInstance()`
+- Implement `ITmfStateProvider#getNewInstance()`
 - Implement `AbstractTmfStateProvider#eventHandle()`
 
 ---
