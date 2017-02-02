@@ -493,7 +493,7 @@ title: Exercise: Persist the toggle state
 
 - Reset to **PLUG7**
 - When the toggle state is set:
-	- Get the InstanScope
+	- Get the InstanceScope
 	- Get the node
 	- Set the key/value
 
@@ -508,7 +508,7 @@ preferences.put(TOGGLE_STATE_PREF_KEY, Boolean.toString(fToggledState));
 title: Exercise: Persist the toggle state
 
 - When the view is created:
-	- Get the InstanScope
+	- Get the InstanceScope
 	- Get the node
 	- Get value using key, set the label text
 
@@ -566,7 +566,7 @@ title: Exercise: Creating a polling job
 ---
 title: Exercise: Print to view
 
-Every tick, we would like to show the elapsed time in the view. It can just be a label
+Every tick, we would like to show the elapsed time in the view. It can just be an incrementing counter.
 
 - Reset to **PLUG9**
 - Create a counter (a simple int) that is incremented each tick.
