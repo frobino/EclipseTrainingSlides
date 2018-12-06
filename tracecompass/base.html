@@ -90,7 +90,7 @@ URL: https://code.google.com/p/io-2012-slides
 
 <slides {% if settings.aspect_ratio == "16:9" %}class="layout-widescreen2"{% elif settings.aspect_ratio == "4:3" %}{% else %}class="layout-widescreen"{% endif %} >
 {% if settings.logoslide == "true" %}
-  {{ logoslide() }}
+  {{logoslide() }}
 {% endif %}
 
 {% macro blend(text, clipid, fill) %}
