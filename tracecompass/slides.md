@@ -521,7 +521,7 @@ subtitle: Analysis Module
 content_class: smaller
 
 - **Identifier**: org.eclipse.linuxtools.tmf.core.analysis
-~~~dtd
+<pre class="prettyprint" data-lang="dtd">
 		<!ELEMENT module (parameter , tracetype)*>
 		<!ATTLIST module
 		id                 CDATA #REQUIRED
@@ -530,7 +530,7 @@ content_class: smaller
 		icon               CDATA #IMPLIED
 		automatic          (true | false)
 		applies_experiment (true | false) >
-~~~
+</pre>
 - **id**: The unique ID that identifies this analysis module.
 - **name**: The trace analysis module's name as it is displayed to the end user
 - **analysis_module**: Class that implements the `IAnalysisModule` interface.
@@ -563,15 +563,12 @@ title: Apply to Trace Type
 subtitle: 
 
 - Define the trace type the analysis applies (or not)
-
-~~~dtd
-		<!ELEMENT tracetype EMPTY>
-		<!ATTLIST tracetype
-		class   CDATA #REQUIRED
-		applies (true | false) >
-~~~
-
-- 
+<pre class="prettyprint" data-lang="dtd">
+	<!ELEMENT tracetype EMPTY>
+	<!ATTLIST tracetype
+	class     CDATA #REQUIRED
+	applies   (true | false) >
+</pre>
 - **class**: base trace class this analysis applies to or not 
 	- Note: it also applies to traces extending this class
 - **applies**: Does this tracetype element mean the class applies or not (default true)
@@ -692,13 +689,11 @@ subtitle:
 - Analysis may have parameters
 - Default values can be set as part of analysis extension
 - Add parameter provider to analysis in plugin.xml file
-
-~~~dtd
+<pre class="prettyprint" data-lang="dtd">
 		<!ELEMENT parameterProvider (analysisId)>
 		<!ATTLIST parameterProvider
 		class CDATA #REQUIRED>
-~~~
-
+</pre>
 - **class**: The class that contains this analysis parameter provider.
 	- Implement `IAnalysisParameterProvider`
 	- Extend `TmfAbstractAnalysisParameterProvider`
@@ -773,15 +768,12 @@ title: Analysis Output (2)
 subtitle: 
 
 - Associates an output with an analysis module or a class of analysis modules in plugin.xml
-
-~~~dtd
-	<!ELEMENT output (analysisId | analysisModuleClass)>
-	<!ATTLIST output
+<pre class="prettyprint" data-lang="dtd">
+		<!ELEMENT output (analysisId | analysisModuleClass)>
+		<!ATTLIST output
 		class CDATA #REQUIRED
 		id    CDATA #IMPLIED>
-~~~
-
-- 
+</pre>
 - **class**: The class of this output.
 - **id**: An ID for this output. For example, for a view, it would be the view ID.
 
@@ -897,7 +889,7 @@ subtitle:
 - Linux Kernel State System
 - Example path: Processes/1001/PPID
 
-~~~
+</pre>
 	  |- CPUs
 	  |  |- <CPU-number> -> CPU Status
 	  |     |- CURRENT_THREAD
@@ -911,7 +903,7 @@ subtitle:
 	        |- EXEC_NAME
 	        |- PRIO
 	        |- SYSTEM_CALL
-~~~
+</pre>
 
 ---
 
@@ -980,9 +972,9 @@ ITmfStateValue getStateValue();
 
 - Validates whether it intersects with a given timestamp
 
-~~~
+</pre>
 boolean intersects(long timestamp);
-~~~
+</pre>
 
 ---
 
@@ -1145,10 +1137,10 @@ title: Exercise Attribute Tree
 subtitle:
 
  
-~~~
+</pre>
 	  |- Requester
 	        |- <requester> -> State Value
-~~~
+</pre>
 
 - Example path: Requester/&lt;requester&gt;
 	- Where &lt;requester&gt; is taken from an event field of a CTF event.
@@ -1183,11 +1175,11 @@ title: Exercise Attribute Tree
 subtitle:
 
  
-~~~
+</pre>
 	  |- Requester
 	        |- <requester> -> State Value
 	              |-<id>   -> State Value
-~~~
+</pre>
 
 - Example path: Requester/&lt;requester&gt;/&lt;id&gt;
 	- Where &lt;requester&gt; is taken from event field of CTF event
@@ -2079,7 +2071,7 @@ content_class: smaller
 
 - XML description
 
-~~~xml
+<pre class="prettyprint" data-lang="xml">
 <fsm id="process:processing">
 	<precondition event="ust_master:PROCESS_START"/>
 	<precondition event="ust_master:PROCESS_END"/>
@@ -2097,7 +2089,7 @@ content_class: smaller
 	</state>
 	<final id="END"/>
 </fsm>
-~~~
+</pre>
 
 ---
 title: XML analysis basic
@@ -2189,9 +2181,9 @@ title: Exercise: Edit the analysis
 subtitle: 
 
 - We can see that there are some `stateChange` where the  `stateValue` is set to **null**.
-~~~xml
+<pre class="prettyprint" data-lang="xml">
 <stateValue type="null" />
-~~~
+</pre>
 
 - We probably don't want to set the value to **null** for the `ust_master:PROCESS_INIT` and `ust_master:PROCESS_START` events.
 <br><br>
@@ -2202,14 +2194,14 @@ title: Exercise: Edit the analysis
 subtitle: 
 
 - Change the **stateValue** for event `ust_master:PROCESS_INIT` to `$INITIALIZING`
-~~~xml
+<pre class="prettyprint" data-lang="xml">
     <stateValue type="int" value="$INITIALIZING"/>
-~~~
+</pre>
 
 - Change the **stateValue** for event `ust_master:PROCESS_START` to `$PROCESSING`
-~~~xml
+<pre class="prettyprint" data-lang="xml">
     <stateValue type="int" value="$PROCESSING"/>
-~~~
+</pre>
 
 - Save the file. The open trace should close. 
 - Reopen the trace and the view
@@ -2269,7 +2261,7 @@ content_class: smaller
 
 - Open the XML file (using Edit)
 - The file contains an action that creates latency data (segments) in the file
-~~~xml
+<pre class="prettyprint" data-lang="xml">
     <action id="processing_endeded">
         <segment>
           <segType segName="PROCESSING" />
@@ -2283,7 +2275,7 @@ content_class: smaller
           </segContent>
         </segment>
       </action>
-~~~
+</pre>
 - **This action is never used**
 <br>
 - Let's edit the XML file
@@ -2295,9 +2287,9 @@ subtitle:
 - We need to call the action when the processing ended (when we receive the `ust_master:PROCESS_END` event).
 - Let's add an action to the `ust_master:PROCESS_END` event transition.
 
-~~~xml
+<pre class="prettyprint" data-lang="xml">
 <transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" />
-~~~
+</pre>
 
 - Save the file. The open trace should close. 
 - Reopen the trace and the latency views
