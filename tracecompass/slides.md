@@ -1049,7 +1049,6 @@ content_class: smaller
 
 - Access state system using static utility method
 <pre class="prettyprint" data-lang="java">
-
 ITmfStateSystem myStateSystem = TmfStateSystemAnalysisModule.getStateSystem(trace, "my.analysis.id");
 </pre>
 - Create state provider class 
