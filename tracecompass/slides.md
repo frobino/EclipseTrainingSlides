@@ -889,16 +889,16 @@ subtitle:
 - Linux Kernel State System
 - Example path: Processes/1001/PPID
 
-</pre>
+<pre class="prettyprint">
 	  |- CPUs
-	  |  |- <CPU-number> -> CPU Status
+	  |  |- &lt;CPU-number&gt; -> CPU Status
 	  |     |- CURRENT_THREAD
 	  |     |- SOFT_IRQS
-	  |     |  |- <Soft-IRQ-number> -> Soft IRQ Status
+	  |     |  |- &lt;Soft-IRQ-number&gt; -> Soft IRQ Status
 	  |     |- IRQS
-	  |        |- <IRQ-number> -> IRQ Status
+	  |        |- &lt;IRQ-number&gt; -> IRQ Status
 	  |- THREADS
-	     |- <Thread-number> -> Thread Status
+	     |- &lt;Thread-number&gt; -> Thread Status
 	        |- PPID
 	        |- EXEC_NAME
 	        |- PRIO
@@ -1136,9 +1136,9 @@ title: Exercise Attribute Tree
 subtitle:
 
  
-</pre>
+<pre class="prettyprint">
 	  |- Requester
-	        |- <requester> -> State Value
+	        |- &lt;requester&gt; -> State Value
 </pre>
 
 - Example path: Requester/&lt;requester&gt;
@@ -1174,10 +1174,10 @@ title: Exercise Attribute Tree
 subtitle:
 
  
-</pre>
+<pre class="prettyprint">
 	  |- Requester
-	        |- <requester> -> State Value
-	              |-<id>   -> State Value
+	        |- &lt;requester&gt; -> State Value
+	              |-&lt;id&gt;   -> State Value
 </pre>
 
 - Example path: Requester/&lt;requester&gt;/&lt;id&gt;
@@ -2071,23 +2071,23 @@ content_class: smaller
 - XML description
 
 <pre class="prettyprint" data-lang="xml">
-<fsm id="process:processing">
-	<precondition event="ust_master:PROCESS_START"/>
-	<precondition event="ust_master:PROCESS_END"/>
-	<initialState>
-		<transition event="ust_master:PROCESS_INIT" 
-			target="INITIALIZING" action="process_init:save_id"/>
-	</initialState>
-	<state id="INITIALIZING">
-		<transition event="ust_master:PROCESS_START" cond="test_id" 
-			target="PROCESSING" action="process_start"/>
-	</state>
-	<state id="PROCESSING">
-		<transition event="ust_master:PROCESS_END" cond="test_id" 
-			target="END" action="process_end"/>
-	</state>
-	<final id="END"/>
-</fsm>
+&lt;fsm id="process:processing"&gt;
+	&lt;precondition event="ust_master:PROCESS_START"/&gt;
+	&lt;precondition event="ust_master:PROCESS_END"/&gt;
+	&lt;initialState&gt;
+		&lt;transition event="ust_master:PROCESS_INIT" 
+			target="INITIALIZING" action="process_init:save_id"/&gt;
+	&lt;/initialState&gt;
+	&lt;state id="INITIALIZING"&gt;
+		&lt;transition event="ust_master:PROCESS_START" cond="test_id" 
+			target="PROCESSING" action="process_start"/&gt;
+	&lt;/state&gt;
+	&lt;state id="PROCESSING"&gt;
+		&lt;transition event="ust_master:PROCESS_END" cond="test_id" 
+			target="END" action="process_end"/&gt;
+	&lt;/state&gt;
+	&lt;final id="END"/&gt;
+&lt;/fsm&gt;
 </pre>
 
 ---
@@ -2181,7 +2181,7 @@ subtitle:
 
 - We can see that there are some `stateChange` where the  `stateValue` is set to **null**.
 <pre class="prettyprint" data-lang="xml">
-<stateValue type="null" />
+&lt;stateValue type="null" /&gt;
 </pre>
 
 - We probably don't want to set the value to **null** for the `ust_master:PROCESS_INIT` and `ust_master:PROCESS_START` events.
@@ -2194,12 +2194,12 @@ subtitle:
 
 - Change the **stateValue** for event `ust_master:PROCESS_INIT` to `$INITIALIZING`
 <pre class="prettyprint" data-lang="xml">
-    <stateValue type="int" value="$INITIALIZING"/>
+    &lt;stateValue type="int" value="$INITIALIZING"/&gt;
 </pre>
 
 - Change the **stateValue** for event `ust_master:PROCESS_START` to `$PROCESSING`
 <pre class="prettyprint" data-lang="xml">
-    <stateValue type="int" value="$PROCESSING"/>
+    &lt;stateValue type="int" value="$PROCESSING"/&gt;
 </pre>
 
 - Save the file. The open trace should close. 
@@ -2261,19 +2261,19 @@ content_class: smaller
 - Open the XML file (using Edit)
 - The file contains an action that creates latency data (segments) in the file
 <pre class="prettyprint" data-lang="xml">
-    <action id="processing_endeded">
-        <segment>
-          <segType segName="PROCESSING" />
-          <segContent>
-            <segField name="requester" type="string">
-              <stateValue type="eventField" value="requester" />
-            </segField>
-            <segField name="id" type="string">
-              <stateValue type="eventField" value="id" />
-            </segField>
-          </segContent>
-        </segment>
-      </action>
+    &lt;action id="processing_endeded"&gt;
+        &lt;segment&gt;
+          &lt;segType segName="PROCESSING" /&gt;
+          &lt;segContent&gt;
+            &lt;segField name="requester" type="string"&gt;
+              &lt;stateValue type="eventField" value="requester" /&gt;
+            &lt;/segField&gt;
+            &lt;segField name="id" type="string"&gt;
+              &lt;stateValue type="eventField" value="id" /&gt;
+            &lt;/segField&gt;
+          &lt;/segContent&gt;
+        &lt;/segment&gt;
+      &lt;/action&gt;
 </pre>
 - **This action is never used**
 <br>
@@ -2287,7 +2287,7 @@ subtitle:
 - Let's add an action to the `ust_master:PROCESS_END` event transition.
 
 <pre class="prettyprint" data-lang="xml">
-<transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" />
+&lt;transition event="ust_master:PROCESS_END" target="end" cond="cond_same_data" action="processing_endeded" /&gt;
 </pre>
 
 - Save the file. The open trace should close. 
